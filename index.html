@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="ms" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <title>Fast Loan &amp; Personal Driver — Pinjaman Peribadi &amp; Pemandu Peribadi Kuantan</title>
+
+  <!-- Google Fonts: Outfit (Display) & Plus Jakarta Sans (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          },
+          colors: {
+            obsidian: {
+              DEFAULT: '#07090E',
+              light: '#0D111A',
+              card: '#101522',
+            },
+            gold: {
+              300: '#F7ECC2',
+              400: '#F3E5AB',
+              500: '#D4AF37',
+              600: '#B59024',
+            },
+            emerald: {
+              400: '#34D399',
+              500: '#10B981',
+              600: '#059669',
+            }
+          },
+          boxShadow: {
+            'gold-glow': '0 0 30px rgba(212, 175, 55, 0.18)',
+            'emerald-glow': '0 0 30px rgba(16, 185, 129, 0.18)',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Firebase SDK (Modular v10) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // =========================================================================
+    // KONFIGURASI FIREBASE ANDA (GANTIKAN DENGAN MAKLUMAT PROJEK FIREBASE ANDA)
+    // =========================================================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEFk31XyLoVbucXfDngn73mA6eTgdXtr0",
+  authDomain: "mudahwangmy-dae55.firebaseapp.com",
+  projectId: "mudahwangmy-dae55",
+  storageBucket: "mudahwangmy-dae55.firebasestorage.app",
+  messagingSenderId: "94534290980",
+  appId: "1:94534290980:web:b03170efa880feeefc92b1",
+  measurementId: "G-CQVXV38BHK"
+    };
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      window.firebaseDB = db;
+      window.firebaseHelpers = { collection, addDoc, serverTimestamp };
+    } catch (err) {
+      console.warn("Firebase belum dikonfigurasi sepenuhnya:", err);
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-obsidian: #07090E;
+      --gold-primary: #D4AF37;
+      --gold-champagne: #F3E5AB;
+      --emerald-primary: #10B981;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      touch-action: pan-x pan-y;
+      -ms-touch-action: pan-x pan-y;
+    }
+
+    body {
+      background-color: var(--bg-obsidian);
+      color: #F1F5F9;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 12% 10%, rgba(212, 175, 55, 0.11) 0%, transparent 38%),
+        radial-gradient(circle at 88% 18%, rgba(16, 185, 129, 0.10) 0%, transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(212, 175, 55, 0.06) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+
+    .cyber-grid {
+      background-size: 44px 44px;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    }
+
+    .glass-panel {
+      background: linear-gradient(145deg, rgba(16, 21, 34, 0.84) 0%, rgba(10, 14, 23, 0.92) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(243, 229, 171, 0.08);
+    }
+
+    .glass-subpanel {
+      background: rgba(7, 9, 14, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #F7ECC2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .luxury-input {
+      background: rgba(7, 9, 14, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      color: #F8FAFC;
+      transition: all 0.22s ease;
+    }
+
+    .luxury-input::placeholder { color: #64748B; }
+
+    .luxury-input:focus {
+      outline: none;
+      border-color: #D4AF37;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16);
+      background: rgba(11, 15, 25, 0.96);
+    }
+
+    .luxury-input-emerald:focus {
+      outline: none;
+      border-color: #10B981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+      background: rgba(11, 15, 25, 0.96);
+    }
+
+    input[type="range"].gold-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(30, 41, 59, 0.9);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"].gold-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #F3E5AB, #D4AF37);
+      border: 3px solid #07090E;
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.7);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    input[type="range"].gold-slider::-webkit-slider-thumb:hover { transform: scale(1.12); }
+
+    input[type="range"].emerald-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(30, 41, 59, 0.9);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"].emerald-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6EE7B7, #10B981);
+      border: 3px solid #07090E;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.7);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    input[type="range"].emerald-slider::-webkit-slider-thumb:hover { transform: scale(1.12); }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 55%, #B59024 100%);
+      color: #07090E;
+      box-shadow: 0 10px 26px rgba(212, 175, 55, 0.28);
+      transition: all 0.25s ease;
+    }
+
+    .btn-gold:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(212, 175, 55, 0.42);
+      filter: brightness(1.04);
+    }
+
+    .btn-gold:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    .btn-emerald {
+      background: linear-gradient(135deg, #34D399 0%, #10B981 55%, #059669 100%);
+      color: #07090E;
+      box-shadow: 0 10px 26px rgba(16, 185, 129, 0.28);
+      transition: all 0.25s ease;
+    }
+
+    .btn-emerald:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(16, 185, 129, 0.42);
+      filter: brightness(1.04);
+    }
+
+    .btn-emerald:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-tab { animation: fadeSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body class="cyber-grid min-h-screen flex flex-col antialiased selection:bg-gold-500 selection:text-obsidian">
+
+  <!-- TOP TOAST NOTIFICATION -->
+  <div id="toastBanner" class="fixed top-4 right-4 left-4 sm:left-auto sm:w-96 z-50 hidden transform transition-all duration-300">
+    <div id="toastContent" class="glass-panel rounded-2xl p-4 border border-gold-500/40 flex items-start gap-3 shadow-2xl">
+      <div id="toastIcon" class="w-9 h-9 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center shrink-0 mt-0.5">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 id="toastTitle" class="font-display font-bold text-sm text-white">Notifikasi</h4>
+        <p id="toastMessage" class="text-xs text-slate-300 mt-0.5 leading-relaxed"></p>
+      </div>
+      <button type="button" onclick="hideToast()" aria-label="Tutup notifikasi" class="text-slate-400 hover:text-white p-1 cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER & NAVIGATION -->
+  <header class="sticky top-0 z-40 border-b border-gold-500/15 bg-obsidian/85 backdrop-blur-xl">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col lg:flex-row items-center justify-between gap-3.5">
+      <div class="w-full lg:w-auto flex items-center justify-between gap-3">
+        <a href="#top" onclick="switchServiceTab('loan')" class="flex items-center gap-3.5 group">
+          <!-- AOS EMBLEM LOGO -->
+          <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 via-gold-500 to-emerald-500 p-[1.5px] shadow-gold-glow shrink-0">
+            <div class="w-full h-full rounded-[14px] bg-obsidian flex flex-col items-center justify-center relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-tr from-gold-500/20 via-transparent to-emerald-500/20"></div>
+              <svg class="w-9 h-4 text-gold-400 relative z-10 -mb-0.5" viewBox="0 0 64 22" fill="none">
+                <path d="M4 18L32 3L60 18" stroke="url(#aosArc)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="32" cy="3" r="2.2" fill="#34D399" />
+                <defs>
+                  <linearGradient id="aosArc" x1="4" y1="18" x2="60" y2="18" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#F3E5AB" />
+                    <stop offset="0.5" stop-color="#D4AF37" />
+                    <stop offset="1" stop-color="#34D399" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <span class="font-display font-extrabold text-[15px] tracking-[0.12em] text-gold-gradient leading-none relative z-10">AOS</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="font-display font-extrabold text-base sm:text-xl tracking-tight text-white leading-tight">
+                Fast Loan <span class="text-gold-gradient">&amp; Personal Driver</span>
+              </h1>
+              <span class="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Online
+              </span>
+            </div>
+            <p data-i18n="headerSubtitle" class="text-[11px] text-slate-400 tracking-wide">Penyelesaian Kewangan &amp; Mobiliti Eksklusif</p>
+          </div>
+        </a>
+
+        <!-- MOBILE LANGUAGE SWITCHER -->
+        <div class="flex lg:hidden items-center p-1 rounded-xl bg-obsidian-light border border-slate-800 shrink-0" role="group" aria-label="Pilihan Bahasa">
+          <button type="button" id="langBtnMsMobile" onclick="setLanguage('ms')"
+            class="px-2.5 py-1.5 rounded-lg font-display font-bold text-[11px] transition-all cursor-pointer bg-gold-500 text-obsidian">
+            BM
+          </button>
+          <button type="button" id="langBtnEnMobile" onclick="setLanguage('en')"
+            class="px-2.5 py-1.5 rounded-lg font-display font-bold text-[11px] transition-all cursor-pointer text-slate-300 hover:text-white">
+            EN
+          </button>
+        </div>
+      </div>
+
+      <div class="w-full lg:w-auto flex items-center justify-between lg:justify-end gap-2.5">
+        <nav aria-label="Navigasi Servis Utama" class="flex-1 lg:flex-initial grid grid-cols-2 gap-1.5 p-1.5 rounded-2xl bg-obsidian-light border border-slate-800/90">
+          <button type="button" id="navTabLoan" onclick="switchServiceTab('loan')"
+            class="px-3.5 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 bg-gradient-to-r from-gold-400 to-gold-500 text-obsidian shadow-md cursor-pointer">
+            <i class="fa-solid fa-coins"></i>
+            <span data-i18n="navLoan">Pinjaman Peribadi</span>
+          </button>
+          <button type="button" id="navTabDriver" onclick="switchServiceTab('driver')"
+            class="px-3.5 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-300 hover:text-white cursor-pointer">
+            <i class="fa-solid fa-car-side"></i>
+            <span data-i18n="navDriver">Pemandu Peribadi</span>
+          </button>
+        </nav>
+
+        <!-- DESKTOP BILINGUAL LANGUAGE SWITCHER -->
+        <div class="hidden lg:flex items-center gap-1 p-1.5 rounded-2xl bg-obsidian-light border border-slate-800/90 shrink-0" role="group" aria-label="Language Switcher">
+          <span class="pl-2 pr-1 text-slate-400 text-xs"><i class="fa-solid fa-globe"></i></span>
+          <button type="button" id="langBtnMs" onclick="setLanguage('ms')"
+            class="px-3 py-1.5 rounded-xl font-display font-bold text-xs transition-all cursor-pointer bg-gold-500 text-obsidian shadow-sm">
+            BM
+          </button>
+          <button type="button" id="langBtnEn" onclick="setLanguage('en')"
+            class="px-3 py-1.5 rounded-xl font-display font-bold text-xs transition-all cursor-pointer text-slate-300 hover:text-white">
+            EN
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main id="top" class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <!-- Hero Intro Banner -->
+    <section class="mb-8 sm:mb-10 text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 text-xs font-semibold mb-4">
+        <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+        <span data-i18n="heroBadge">Platform Pantas, Telus &amp; Sulit • Fast Loan &amp; Personal Driver</span>
+      </div>
+      <h2 id="heroHeadline" class="font-display font-extrabold text-2xl sm:text-4xl lg:text-[42px] text-white leading-tight tracking-tight">
+        Kemudahan <span class="text-gold-gradient">Pinjaman Peribadi</span> &amp; <span class="text-emerald-400">Pemandu Peribadi</span> dalam Satu Hab
+      </h2>
+      <p data-i18n="heroDescription" class="text-xs sm:text-sm text-slate-400 mt-3 max-w-2xl mx-auto leading-relaxed">
+        Kira bayaran bulanan pinjaman anda secara masa nyata dengan kadar keuntungan tetap 2.0% sebulan, atau tempah perkhidmatan pemandu peribadi khas untuk perjalanan sekitar daerah Kuantan, Pahang.
+      </p>
+
+      <!-- Quick Service Cards Selector -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-6 text-left">
+        <button type="button" id="heroCardLoan" onclick="switchServiceTab('loan')"
+          class="glass-panel rounded-2xl p-4 sm:p-5 border-2 border-gold-500/60 transition-all duration-200 flex items-center justify-between gap-4 cursor-pointer group">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-gold-500/15 border border-gold-500/35 text-gold-400 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <div>
+              <span data-i18n="heroCard1Tag" class="text-[10px] font-bold uppercase tracking-widest text-gold-400">Servis 01</span>
+              <h3 data-i18n="heroCard1Title" class="font-display font-bold text-base sm:text-lg text-white">Pinjaman Peribadi</h3>
+              <p data-i18n="heroCard1Sub" class="text-xs text-slate-400 mt-0.5">RM 300 – RM 5,000 • Kadar 2.0% Sebulan</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right text-gold-400 text-sm"></i>
+        </button>
+
+        <button type="button" id="heroCardDriver" onclick="switchServiceTab('driver')"
+          class="glass-panel rounded-2xl p-4 sm:p-5 border border-slate-800 hover:border-emerald-500/50 transition-all duration-200 flex items-center justify-between gap-4 cursor-pointer group">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 text-emerald-400 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-route"></i>
+            </div>
+            <div>
+              <span data-i18n="heroCard2Tag" class="text-[10px] font-bold uppercase tracking-widest text-emerald-400">Servis 02 • Kuantan Sahaja</span>
+              <h3 data-i18n="heroCard2Title" class="font-display font-bold text-base sm:text-lg text-white">Pemandu Peribadi</h3>
+              <p data-i18n="heroCard2Sub" class="text-xs text-slate-400 mt-0.5">Harian / Bulanan • Sekitar Kuantan, Pahang</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right text-emerald-400 text-sm"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: PINJAMAN PERIBADI (KALKULATOR + BORANG PEMOHON)              -->
+    <!-- =================================================================== -->
+    <section id="sectionLoan" class="animate-tab">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+
+        <!-- LEFT COLUMN (5 cols): REAL-TIME SMART CALCULATOR -->
+        <div class="lg:col-span-5 glass-panel rounded-3xl p-5 sm:p-7 lg:sticky lg:top-24">
+          <div class="flex items-center justify-between gap-3 border-b border-slate-800/90 pb-4 mb-5">
+            <div>
+              <span data-i18n="calcBadge" class="text-[11px] font-bold uppercase tracking-widest text-gold-400">Kalkulator Pintar</span>
+              <h3 data-i18n="calcTitle" class="font-display font-bold text-xl sm:text-2xl text-white mt-0.5">Simulasi Pinjaman</h3>
+            </div>
+            <div data-i18n="calcRateBadge" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+              Kadar: 2.0% / bln
+            </div>
+          </div>
+
+          <!-- 1. Jumlah Pinjaman Control -->
+          <div class="mb-6">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <label for="loanAmountInput" data-i18n="lblLoanAmount" class="text-xs sm:text-sm font-semibold text-slate-200">
+                Jumlah Pinjaman (RM)
+              </label>
+              <div class="relative w-36">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gold-400 font-bold text-xs">RM</span>
+                <input type="number" id="loanAmountInput" min="300" max="5000" step="10" value="1500"
+                  class="luxury-input w-full rounded-xl pl-9 pr-3 py-2 text-right font-display font-bold text-base text-gold-400" />
+              </div>
+            </div>
+
+            <input type="range" id="loanAmountSlider" min="300" max="5000" step="50" value="1500" class="gold-slider my-2" />
+
+            <div class="flex justify-between text-[11px] text-slate-400 font-medium">
+              <span>Min: RM 300</span>
+              <span>Max: RM 5,000</span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 mt-3">
+              <button type="button" onclick="setQuickLoanAmount(500)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-gold-500/50 text-xs font-semibold text-slate-300 hover:text-gold-400 transition cursor-pointer">RM 500</button>
+              <button type="button" onclick="setQuickLoanAmount(1500)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-gold-500/50 text-xs font-semibold text-slate-300 hover:text-gold-400 transition cursor-pointer">RM 1,500</button>
+              <button type="button" onclick="setQuickLoanAmount(3000)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-gold-500/50 text-xs font-semibold text-slate-300 hover:text-gold-400 transition cursor-pointer">RM 3,000</button>
+              <button type="button" onclick="setQuickLoanAmount(5000)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-gold-500/50 text-xs font-semibold text-slate-300 hover:text-gold-400 transition cursor-pointer">RM 5,000</button>
+            </div>
+          </div>
+
+          <!-- 2. Tempoh Bayaran Bulanan Control -->
+          <div class="mb-6">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <label for="loanTenureInput" data-i18n="lblLoanTenure" class="text-xs sm:text-sm font-semibold text-slate-200">
+                Tempoh Bayaran (Bulan)
+              </label>
+              <div class="relative w-36">
+                <input type="number" id="loanTenureInput" min="6" max="24" step="1" value="12"
+                  class="luxury-input w-full rounded-xl pl-3 pr-16 py-2 text-right font-display font-bold text-base text-emerald-400" />
+                <span data-i18n="unitMonths" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 font-semibold text-xs">Bulan</span>
+              </div>
+            </div>
+
+            <input type="range" id="loanTenureSlider" min="6" max="24" step="1" value="12" class="emerald-slider my-2" />
+
+            <div class="flex justify-between text-[11px] text-slate-400 font-medium">
+              <span data-i18n="minTenure">Min: 6 Bulan</span>
+              <span data-i18n="maxTenure">Max: 24 Bulan (2 Tahun)</span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 mt-3">
+              <button type="button" data-i18n="btn6m" onclick="setQuickLoanTenure(6)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-emerald-500/50 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition cursor-pointer">6 Bln</button>
+              <button type="button" data-i18n="btn12m" onclick="setQuickLoanTenure(12)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-emerald-500/50 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition cursor-pointer">12 Bln</button>
+              <button type="button" data-i18n="btn18m" onclick="setQuickLoanTenure(18)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-emerald-500/50 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition cursor-pointer">18 Bln</button>
+              <button type="button" data-i18n="btn24m" onclick="setQuickLoanTenure(24)" class="py-1.5 px-2 rounded-lg bg-obsidian-light border border-slate-800 hover:border-emerald-500/50 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition cursor-pointer">24 Bln</button>
+            </div>
+          </div>
+
+          <!-- 3. Real-Time Calculation Breakdown Box -->
+          <div class="rounded-2xl p-5 bg-gradient-to-br from-obsidian via-obsidian-light to-obsidian border border-gold-500/35 shadow-gold-glow">
+            <div class="text-center pb-4 border-b border-slate-800">
+              <span data-i18n="calcEstMonthlyLabel" class="text-[11px] font-bold uppercase tracking-widest text-gold-400">Anggaran Bayaran Bulanan</span>
+              <div id="calcMonthlyPayment" class="font-display font-extrabold text-3xl sm:text-4xl text-white mt-1 tracking-tight">RM 155.00</div>
+              <span id="calcTenureSubtitle" class="text-xs text-emerald-400 font-medium">Untuk tempoh 12 bulan (1.0 tahun)</span>
+            </div>
+
+            <div class="space-y-2.5 pt-4 text-xs sm:text-sm">
+              <div class="flex items-center justify-between">
+                <span data-i18n="calcPrincipalLabel" class="text-slate-400">Jumlah Pinjaman Pokok</span>
+                <span id="calcPrincipal" class="font-semibold text-white">RM 1,500.00</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span data-i18n="calcMonthlyProfitLabel" class="text-slate-400">Keuntungan Bulanan (2.0%)</span>
+                <span id="calcMonthlyProfit" class="font-semibold text-emerald-400">RM 30.00 / bln</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span data-i18n="calcTotalProfitLabel" class="text-slate-400">Jumlah Keuntungan Keseluruhan</span>
+                <span id="calcTotalProfit" class="font-semibold text-gold-400">RM 360.00</span>
+              </div>
+              <div class="flex items-center justify-between pt-2.5 border-t border-slate-800/90">
+                <span data-i18n="calcTotalRepaymentLabel" class="font-semibold text-slate-200">Jumlah Bayaran Balik</span>
+                <span id="calcTotalRepayment" class="font-display font-bold text-base text-gold-gradient">RM 1,860.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN (7 cols): APPLICANT FORM -->
+        <div class="lg:col-span-7 glass-panel rounded-3xl p-5 sm:p-8">
+          <div class="border-b border-slate-800/90 pb-5 mb-6">
+            <span data-i18n="loanFormBadge" class="text-[11px] font-bold uppercase tracking-widest text-gold-400">Borang Permohonan Rasmi</span>
+            <h3 data-i18n="loanFormTitle" class="font-display font-bold text-2xl sm:text-3xl text-white mt-0.5">Maklumat Pemohon Pinjaman</h3>
+            <p data-i18n="loanFormSubtitle" class="text-xs sm:text-sm text-slate-400 mt-1">
+              Sila lengkapkan semua butiran peribadi dan pengesahan gambar selfie anda di bawah.
+            </p>
+          </div>
+
+          <form id="loanApplicationForm" novalidate class="space-y-5">
+            <div>
+              <label for="loanFullName" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                <span data-i18n="lblLoanFullName">Nama Penuh Pemohon (Seperti Dalam IC)</span> <span class="text-gold-400">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" id="loanFullName" required data-i18n-placeholder="phLoanFullName" placeholder="Contoh: Ahmad Daniel bin Razak"
+                  class="luxury-input w-full rounded-xl pl-10 pr-4 py-3 text-sm" />
+              </div>
+              <p id="err_loanFullName" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="loanIC" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                  <span data-i18n="lblLoanIC">No. Kad Pengenalan (IC)</span> <span class="text-gold-400">*</span>
+                </label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i class="fa-solid fa-id-card"></i>
+                  </span>
+                  <input type="text" id="loanIC" inputmode="numeric" maxlength="14" required placeholder="950815-06-5432"
+                    class="luxury-input w-full rounded-xl pl-10 pr-4 py-3 text-sm tracking-wider" />
+                </div>
+                <p id="err_loanIC" class="hidden text-xs text-red-400 mt-1"></p>
+              </div>
+
+              <div>
+                <label for="loanPhone" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                  <span data-i18n="lblPhone">No. Telefon Bimbit</span> <span class="text-gold-400">*</span>
+                </label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                    <i class="fa-solid fa-phone"></i>
+                  </span>
+                  <input type="tel" id="loanPhone" required placeholder="012-3456789"
+                    class="luxury-input w-full rounded-xl pl-10 pr-4 py-3 text-sm" />
+                </div>
+                <p id="err_loanPhone" class="hidden text-xs text-red-400 mt-1"></p>
+              </div>
+            </div>
+
+            <div>
+              <label for="loanEmail" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                <span data-i18n="lblLoanEmail">Alamat Emel</span> <span class="text-gold-400">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <i class="fa-solid fa-envelope"></i>
+                </span>
+                <input type="email" id="loanEmail" required data-i18n-placeholder="phLoanEmail" placeholder="Contoh: ahmad.daniel@email.com"
+                  class="luxury-input w-full rounded-xl pl-10 pr-4 py-3 text-sm" />
+              </div>
+              <p id="err_loanEmail" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+
+            <div>
+              <label for="loanAddress" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                <span data-i18n="lblLoanAddress">Alamat Kediaman Lengkap</span> <span class="text-gold-400">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute top-3.5 left-3.5 text-slate-400">
+                  <i class="fa-solid fa-location-dot"></i>
+                </span>
+                <textarea id="loanAddress" rows="2" required data-i18n-placeholder="phLoanAddress" placeholder="No. Rumah, Jalan, Taman / Kampung, Poskod, Bandar, Negeri"
+                  class="luxury-input w-full rounded-xl pl-10 pr-4 py-3 text-sm"></textarea>
+              </div>
+              <p id="err_loanAddress" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+
+            <!-- Maklumat Pekerjaan atau Belajar -->
+            <div class="glass-subpanel rounded-2xl p-4 sm:p-5 space-y-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-briefcase text-gold-400"></i>
+                    <span><span data-i18n="occSectionTitle">Maklumat Pekerjaan atau Belajar</span> <span class="text-gold-400">*</span></span>
+                  </span>
+                  <p data-i18n="occSectionSub" class="text-[11px] text-slate-400 mt-0.5">Pilih status semasa anda</p>
+                </div>
+
+                <div class="inline-flex p-1 rounded-xl bg-obsidian border border-slate-800 self-start">
+                  <button type="button" id="btnStatusBekerja" onclick="setOccupationType('Bekerja')"
+                    class="px-4 py-2 rounded-lg text-xs font-bold bg-gold-500 text-obsidian transition cursor-pointer">
+                    <i class="fa-solid fa-building mr-1"></i> <span data-i18n="statusWorking">Bekerja</span>
+                  </button>
+                  <button type="button" id="btnStatusBelajar" onclick="setOccupationType('Belajar')"
+                    class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i> <span data-i18n="statusStudying">Belajar</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label id="lblOrgName" for="loanOrgName" class="block text-xs font-medium text-slate-300 mb-1.5">
+                    Nama Majikan / Syarikat <span class="text-gold-400">*</span>
+                  </label>
+                  <input type="text" id="loanOrgName" required placeholder="Contoh: Petronas / Berniaga Sendiri"
+                    class="luxury-input w-full rounded-xl px-3.5 py-2.5 text-sm" />
+                  <p id="err_loanOrgName" class="hidden text-xs text-red-400 mt-1"></p>
+                </div>
+
+                <div>
+                  <label id="lblRoleTitle" for="loanRoleTitle" class="block text-xs font-medium text-slate-300 mb-1.5">
+                    Jawatan <span class="text-gold-400">*</span>
+                  </label>
+                  <input type="text" id="loanRoleTitle" required placeholder="Contoh: Eksekutif Operasi"
+                    class="luxury-input w-full rounded-xl px-3.5 py-2.5 text-sm" />
+                  <p id="err_loanRoleTitle" class="hidden text-xs text-red-400 mt-1"></p>
+                </div>
+              </div>
+
+              <div id="incomeFieldContainer">
+                <label for="loanMonthlyIncome" class="block text-xs font-medium text-slate-300 mb-1.5">
+                  <span data-i18n="lblMonthlyIncome">Anggaran Pendapatan Bulanan (RM)</span> <span class="text-gold-400">*</span>
+                </label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gold-400 font-bold text-xs">RM</span>
+                  <input type="number" id="loanMonthlyIncome" min="0" data-i18n-placeholder="phMonthlyIncome" placeholder="Contoh: 2500"
+                    class="luxury-input w-full rounded-xl pl-10 pr-4 py-2.5 text-sm" />
+                </div>
+                <p id="err_loanMonthlyIncome" class="hidden text-xs text-red-400 mt-1"></p>
+              </div>
+            </div>
+
+            <!-- Gambar Selfie -->
+            <div class="glass-subpanel rounded-2xl p-4 sm:p-5 space-y-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <span class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-camera text-emerald-400"></i>
+                    <span><span data-i18n="selfieTitle">Gambar Selfie Pengesahan</span> <span class="text-gold-400">*</span></span>
+                  </span>
+                  <p data-i18n="selfieSubtitle" class="text-[11px] text-slate-400 mt-0.5">
+                    Tangkap gambar selfie terus menggunakan kamera atau muat naik fail gambar yang jelas.
+                  </p>
+                </div>
+                <span data-i18n="selfieAutoCompress" class="text-[11px] px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-medium self-start">
+                  Mampatan Automatik
+                </span>
+              </div>
+
+              <div id="selfieActionButtons" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" onclick="openSelfieCamera()"
+                  class="py-3 px-4 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition cursor-pointer">
+                  <i class="fa-solid fa-camera-retro text-base"></i>
+                  <span data-i18n="btnOpenCamera">Buka Kamera Selfie</span>
+                </button>
+
+                <label for="selfieFileInput"
+                  class="py-3 px-4 rounded-xl bg-gold-500/15 hover:bg-gold-500/25 border border-gold-500/40 text-gold-300 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition cursor-pointer">
+                  <i class="fa-solid fa-cloud-arrow-up text-base"></i>
+                  <span data-i18n="btnUploadSelfie">Muat Naik Fail Gambar</span>
+                  <input type="file" id="selfieFileInput" accept="image/*" class="sr-only" onchange="handleSelfieFileUpload(event)" />
+                </label>
+              </div>
+
+              <!-- Live WebRTC Camera Box -->
+              <div id="cameraLiveContainer" class="hidden space-y-3">
+                <div class="relative rounded-2xl overflow-hidden bg-black border-2 border-emerald-500/50 aspect-[4/3] max-h-80 mx-auto">
+                  <video id="cameraVideoPreview" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-100"></video>
+                  <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+                    <div class="w-44 h-56 sm:w-52 sm:h-64 rounded-full border-2 border-dashed border-gold-400/75 shadow-[0_0_0_9999px_rgba(7,9,14,0.45)]"></div>
+                  </div>
+                  <div class="absolute bottom-3 inset-x-0 text-center">
+                    <span data-i18n="cameraGuideText" class="px-3 py-1 rounded-full bg-obsidian/80 text-[11px] text-gold-300 border border-gold-500/30">
+                      Pastikan wajah berada di dalam bingkai
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-center gap-3">
+                  <button type="button" onclick="captureSelfieFromCamera()"
+                    class="btn-emerald py-2.5 px-5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-circle-dot"></i>
+                    <span data-i18n="btnCapturePhoto">Tangkap Gambar</span>
+                  </button>
+                  <button type="button" onclick="stopSelfieCamera()" data-i18n="btnCancel"
+                    class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs sm:text-sm transition cursor-pointer">
+                    Batal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Captured / Uploaded Selfie Preview -->
+              <div id="selfiePreviewContainer" class="hidden">
+                <div class="flex flex-col sm:flex-row items-center gap-4 p-3.5 rounded-2xl bg-obsidian border border-emerald-500/40">
+                  <img id="selfiePreviewImg" src="" alt="Pratonton Selfie Pemohon"
+                    class="w-28 h-28 sm:w-32 sm:h-32 rounded-xl object-cover border-2 border-gold-400/60 shrink-0" />
+                  <div class="flex-1 text-center sm:text-left">
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-bold">
+                      <i class="fa-solid fa-circle-check"></i>
+                      <span data-i18n="selfieReadyBadge">Selfie Sedia Dihantar</span>
+                    </div>
+                    <p id="selfieFileMeta" class="text-xs text-slate-300 mt-1.5 font-medium">selfie_pemohon.jpg</p>
+                    <p data-i18n="selfieOptimizedNote" class="text-[11px] text-slate-400 mt-0.5">Imej telah dioptimumkan secara automatik untuk penghantaran pantas.</p>
+                    <button type="button" onclick="resetSelfieSelection()"
+                      class="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-semibold transition cursor-pointer">
+                      <i class="fa-solid fa-rotate-right"></i>
+                      <span data-i18n="btnRetakeSelfie">Tukar / Tangkap Semula</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <p id="err_selfie" class="hidden text-xs text-red-400"></p>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-2">
+              <button type="submit" id="btnSubmitLoan"
+                class="btn-gold w-full py-4 px-6 rounded-2xl font-display font-bold text-base sm:text-lg flex items-center justify-center gap-3 cursor-pointer">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span data-i18n="btnSubmitLoan">Hantar Permohonan Pinjaman Peribadi</span>
+              </button>
+              <p class="text-center text-[11px] text-slate-400 mt-3 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-lock text-emerald-400"></i>
+                <span data-i18n="loanSecurityNote">Maklumat dan lampiran anda disulitkan dan dihantar terus ke pelayan rasmi kami.</span>
+              </p>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: PEMANDU PERIBADI (SEKITAR DAERAH KUANTAN, PAHANG SAHAJA)     -->
+    <!-- =================================================================== -->
+    <section id="sectionDriver" class="hidden animate-tab">
+      <div class="max-w-3xl mx-auto glass-panel rounded-3xl p-5 sm:p-9">
+
+        <!-- Kuantan-Only Coverage Badge Banner -->
+        <div class="mb-6 rounded-2xl p-4 bg-gradient-to-r from-emerald-500/20 via-obsidian-light to-gold-500/15 border border-emerald-400/50 flex items-center gap-3.5 shadow-emerald-glow">
+          <div class="w-11 h-11 rounded-xl bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 flex items-center justify-center text-lg shrink-0">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <div>
+            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-emerald-300">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span data-i18n="kuantanZoneTag">Zon Liputan Terhad</span>
+            </span>
+            <h4 data-i18n="kuantanZoneTitle" class="font-display font-bold text-sm sm:text-base text-white mt-0.5">
+              Liputan Operasi: Sekitar Daerah Kuantan, Pahang Sahaja
+            </h4>
+            <p data-i18n="kuantanZoneDesc" class="text-[11px] sm:text-xs text-slate-300 mt-0.5">
+              Perkhidmatan ambil (pickup) dan hantar (drop-off) hanya beroperasi untuk destinasi dalam kawasan Kuantan.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/90 pb-5 mb-6">
+          <div>
+            <span data-i18n="driverFormBadge" class="text-[11px] font-bold uppercase tracking-widest text-emerald-400">Mobiliti Eksklusif Kuantan</span>
+            <h3 data-i18n="driverFormTitle" class="font-display font-bold text-2xl sm:text-3xl text-white mt-0.5">Tempahan Pemandu Peribadi</h3>
+            <p data-i18n="driverFormSubtitle" class="text-xs sm:text-sm text-slate-400 mt-1">
+              Pemandu terlatih, selesa dan menepati masa untuk urusan harian atau korporat sekitar Kuantan.
+            </p>
+          </div>
+          <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 flex items-center justify-center text-emerald-400 text-2xl shrink-0">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+        </div>
+
+        <form id="driverBookingForm" novalidate class="space-y-6">
+          <!-- Pilihan Pelan Bayaran -->
+          <div>
+            <label class="block text-xs sm:text-sm font-semibold text-slate-200 mb-3">
+              <span data-i18n="lblPaymentPlan">Pilihan Pelan Bayaran</span> <span class="text-emerald-400">*</span>
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div id="planCardHarian" onclick="selectDriverPlan('Bayaran Harian')"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectDriverPlan('Bayaran Harian');}"
+                role="button" tabindex="0"
+                class="cursor-pointer rounded-2xl p-4 border-2 border-emerald-400 bg-emerald-500/10 transition flex items-start gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-lg shrink-0 mt-0.5">
+                  <i class="fa-solid fa-calendar-day"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span data-i18n="planDailyTitle" class="font-display font-bold text-white text-base">Bayaran Harian</span>
+                    <span id="dotPlanHarian" class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  </div>
+                  <p data-i18n="planDailyDesc" class="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Sesuai untuk perjalanan harian, penghantaran ke LTSAS / TSK, mesyuarat &amp; urusan sekitar Kuantan.
+                  </p>
+                </div>
+              </div>
+
+              <div id="planCardBulanan" onclick="selectDriverPlan('Bayaran Bulanan')"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectDriverPlan('Bayaran Bulanan');}"
+                role="button" tabindex="0"
+                class="cursor-pointer rounded-2xl p-4 border border-slate-800 bg-obsidian/75 hover:border-emerald-400/50 transition flex items-start gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-gold-500/15 text-gold-400 flex items-center justify-center text-lg shrink-0 mt-0.5">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span data-i18n="planMonthlyTitle" class="font-display font-bold text-white text-base">Bayaran Bulanan</span>
+                    <span id="dotPlanBulanan" class="hidden w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                  </div>
+                  <p data-i18n="planMonthlyDesc" class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Langganan pemandu peribadi tetap secara bulanan untuk eksekutif, syarikat &amp; keluarga di Kuantan.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="driverFullName" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                <span data-i18n="lblCustomerName">Nama Penuh Pelanggan</span> <span class="text-emerald-400">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <i class="fa-solid fa-user"></i>
+                </span>
+                <input type="text" id="driverFullName" required data-i18n-placeholder="phCustomerName" placeholder="Contoh: Nurul Huda binti Ismail"
+                  class="luxury-input luxury-input-emerald w-full rounded-xl pl-10 pr-4 py-3 text-sm" />
+              </div>
+              <p id="err_driverFullName" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+
+            <div>
+              <label for="driverPhone" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                <span data-i18n="lblPhone">No. Telefon Bimbit</span> <span class="text-emerald-400">*</span>
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <i class="fa-solid fa-phone"></i>
+                </span>
+                <input type="tel" id="driverPhone" required placeholder="019-8765432"
+                  class="luxury-input luxury-input-emerald w-full rounded-xl pl-10 pr-4 py-3 text-sm" />
+              </div>
+              <p id="err_driverPhone" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+          </div>
+
+          <!-- Lokasi Ambil -->
+          <div class="glass-subpanel rounded-2xl p-4 sm:p-5 space-y-3.5 border border-emerald-500/30">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs sm:text-sm font-bold text-emerald-300 flex items-center gap-2">
+                <i class="fa-solid fa-circle-dot"></i>
+                <span><span data-i18n="pickupSectionTitle">Lokasi Ambil (Pickup — Sekitar Kuantan)</span> <span class="text-emerald-400">*</span></span>
+              </span>
+              <span data-i18n="kuantanOnlyPill" class="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold">
+                Daerah Kuantan Sahaja
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label for="driverPickupArea" class="block text-xs font-medium text-slate-300 mb-1.5">
+                  <span data-i18n="lblSelectArea">Pilih Kawasan di Kuantan</span> <span class="text-emerald-400">*</span>
+                </label>
+                <div class="relative">
+                  <select id="driverPickupArea" required
+                    class="luxury-input luxury-input-emerald w-full rounded-xl px-3.5 py-3 text-sm appearance-none pr-9 cursor-pointer">
+                    <option value="" data-i18n="optSelectPickup">-- Pilih Kawasan Ambil (Kuantan) --</option>
+                    <option value="Bandar Kuantan / Pusat Bandar">Bandar Kuantan / Pusat Bandar</option>
+                    <option value="Balok">Balok</option>
+                    <option value="Beserah">Beserah</option>
+                    <option value="Indera Mahkota">Indera Mahkota</option>
+                    <option value="Gebeng">Gebeng</option>
+                    <option value="Tanjung Lumpur">Tanjung Lumpur</option>
+                    <option value="Semambu">Semambu</option>
+                    <option value="Teluk Cempedak / Taman Gelora">Teluk Cempedak / Taman Gelora</option>
+                    <option value="Tanah Putih / Bukit Setongkol">Tanah Putih / Bukit Setongkol</option>
+                    <option value="Sungai Isap / Permatang Badak">Sungai Isap / Permatang Badak</option>
+                    <option value="Terminal Sentral Kuantan (TSK)">Terminal Sentral Kuantan (TSK)</option>
+                    <option value="Lapangan Terbang Sultan Ahmad Shah (LTSAS)">Lapangan Terbang Sultan Ahmad Shah (LTSAS)</option>
+                    <option value="Gambang">Gambang</option>
+                    <option value="Cherating">Cherating</option>
+                  </select>
+                  <span class="pointer-events-none absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400">
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                  </span>
+                </div>
+                <p id="err_driverPickupArea" class="hidden text-xs text-red-400 mt-1"></p>
+              </div>
+
+              <div>
+                <label for="driverPickupLandmark" class="block text-xs font-medium text-slate-300 mb-1.5">
+                  <span data-i18n="lblLandmark">Mercu Tanda / Alamat Khusus di Kuantan</span> <span class="text-emerald-400">*</span>
+                </label>
+                <input type="text" id="driverPickupLandmark" required data-i18n-placeholder="phPickupLandmark" placeholder="Contoh: East Coast Mall / Hotel Zenith / No. Rumah..."
+                  class="luxury-input luxury-input-emerald w-full rounded-xl px-3.5 py-3 text-sm" />
+                <p id="err_driverPickupLandmark" class="hidden text-xs text-red-400 mt-1"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center -my-2 relative z-10">
+            <button type="button" onclick="swapKuantanLocations()"
+              class="px-3.5 py-1.5 rounded-full bg-obsidian-light border border-gold-500/40 hover:border-gold-400 text-gold-400 text-xs font-semibold flex items-center gap-1.5 shadow-lg transition cursor-pointer">
+              <i class="fa-solid fa-arrow-up-arrow-down"></i>
+              <span data-i18n="btnSwapLocations">Tukar Lokasi Ambil / Hantar</span>
+            </button>
+          </div>
+
+          <!-- Lokasi Hantar -->
+          <div class="glass-subpanel rounded-2xl p-4 sm:p-5 space-y-3.5 border border-gold-500/30">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs sm:text-sm font-bold text-gold-300 flex items-center gap-2">
+                <i class="fa-solid fa-location-pin"></i>
+                <span><span data-i18n="dropoffSectionTitle">Lokasi Hantar (Drop-off — Sekitar Kuantan)</span> <span class="text-gold-400">*</span></span>
+              </span>
+              <span data-i18n="kuantanOnlyPill" class="text-[11px] px-2.5 py-0.5 rounded-full bg-gold-500/15 text-gold-300 border border-gold-500/30 font-semibold">
+                Daerah Kuantan Sahaja
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label for="driverDropoffArea" class="block text-xs font-medium text-slate-300 mb-1.5">
+                  <span data-i18n="lblSelectArea">Pilih Kawasan di Kuantan</span> <span class="text-gold-400">*</span>
+                </label>
+                <div class="relative">
+                  <select id="driverDropoffArea" required
+                    class="luxury-input w-full rounded-xl px-3.5 py-3 text-sm appearance-none pr-9 cursor-pointer">
+                    <option value="" data-i18n="optSelectDropoff">-- Pilih Kawasan Hantar (Kuantan) --</option>
+                    <option value="Bandar Kuantan / Pusat Bandar">Bandar Kuantan / Pusat Bandar</option>
+                    <option value="Balok">Balok</option>
+                    <option value="Beserah">Beserah</option>
+                    <option value="Indera Mahkota">Indera Mahkota</option>
+                    <option value="Gebeng">Gebeng</option>
+                    <option value="Tanjung Lumpur">Tanjung Lumpur</option>
+                    <option value="Semambu">Semambu</option>
+                    <option value="Teluk Cempedak / Taman Gelora">Teluk Cempedak / Taman Gelora</option>
+                    <option value="Tanah Putih / Bukit Setongkol">Tanah Putih / Bukit Setongkol</option>
+                    <option value="Sungai Isap / Permatang Badak">Sungai Isap / Permatang Badak</option>
+                    <option value="Terminal Sentral Kuantan (TSK)">Terminal Sentral Kuantan (TSK)</option>
+                    <option value="Lapangan Terbang Sultan Ahmad Shah (LTSAS)">Lapangan Terbang Sultan Ahmad Shah (LTSAS)</option>
+                    <option value="Gambang">Gambang</option>
+                    <option value="Cherating">Cherating</option>
+                  </select>
+                  <span class="pointer-events-none absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400">
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                  </span>
+                </div>
+                <p id="err_driverDropoffArea" class="hidden text-xs text-red-400 mt-1"></p>
+              </div>
+
+              <div>
+                <label for="driverDropoffLandmark" class="block text-xs font-medium text-slate-300 mb-1.5">
+                  <span data-i18n="lblLandmark">Mercu Tanda / Alamat Khusus di Kuantan</span> <span class="text-gold-400">*</span>
+                </label>
+                <input type="text" id="driverDropoffLandmark" required data-i18n-placeholder="phDropoffLandmark" placeholder="Contoh: LTSAS / UIAM Kuantan / Hospital Tengku Ampuan Afzan"
+                  class="luxury-input w-full rounded-xl px-3.5 py-3 text-sm" />
+                <p id="err_driverDropoffLandmark" class="hidden text-xs text-red-400 mt-1"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl p-4 sm:p-5 bg-gradient-to-r from-gold-500/15 via-obsidian-light to-emerald-500/15 border border-gold-500/35">
+            <div class="flex items-start gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center text-lg shrink-0 mt-0.5">
+                <i class="fa-solid fa-tag"></i>
+              </div>
+              <div>
+                <span data-i18n="fareBadge" class="text-[11px] font-bold uppercase tracking-wider text-gold-400">Maklumat Kadar Tambang</span>
+                <h4 data-i18n="fareTitle" class="font-display font-bold text-sm sm:text-base text-white mt-0.5">
+                  Harga: Tidak Ditetapkan (Sebut harga dimaklumkan selepas semakan laluan di Kuantan)
+                </h4>
+                <p data-i18n="fareDesc" class="text-xs text-slate-300 mt-1">
+                  Pasukan penyelaras kami akan menghubungi anda dengan sebut harga terbaik berdasarkan jarak laluan sekitar Kuantan dan tempoh perjalanan anda.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="driverDate" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                <span data-i18n="lblBookingDate">Tarikh Tempahan</span> <span class="text-emerald-400">*</span>
+              </label>
+              <input type="date" id="driverDate" required
+                class="luxury-input luxury-input-emerald w-full rounded-xl px-4 py-3 text-sm [color-scheme:dark]" />
+              <p id="err_driverDate" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+
+            <div>
+              <label for="driverTime" data-i18n="lblPickupTime" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+                Masa Ambil (Pilihan)
+              </label>
+              <input type="time" id="driverTime"
+                class="luxury-input luxury-input-emerald w-full rounded-xl px-4 py-3 text-sm [color-scheme:dark]" />
+            </div>
+          </div>
+
+          <div>
+            <label for="driverNotes" data-i18n="lblTripNotes" class="block text-xs sm:text-sm font-semibold text-slate-200 mb-1.5">
+              Catatan Perjalanan (Pilihan)
+            </label>
+            <textarea id="driverNotes" rows="2" data-i18n-placeholder="phTripNotes" placeholder="Contoh: Perjalanan pergi &amp; balik sekitar Kuantan, bilangan penumpang, atau keperluan kenderaan MPV..."
+              class="luxury-input luxury-input-emerald w-full rounded-xl px-4 py-3 text-sm"></textarea>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" id="btnSubmitDriver"
+              class="btn-emerald w-full py-4 px-6 rounded-2xl font-display font-bold text-base sm:text-lg flex items-center justify-center gap-3 cursor-pointer">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span data-i18n="btnSubmitDriver">Hantar Tempahan Pemandu Peribadi</span>
+            </button>
+            <p class="text-center text-[11px] text-slate-400 mt-3 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-shield-check text-emerald-400"></i>
+              <span data-i18n="driverSecurityNote">Tempahan sekitar daerah Kuantan anda akan dihantar terus secara online kepada penyelaras kami.</span>
+            </p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FLOATING ACTION BUTTONS (DOWNLOAD ANDROID APP & WHATSAPP HELP) -->
+  <div class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2.5">
+    <!-- Download Android App Button -->
+    <a id="downloadAndroidBtn" href="https://drive.usercontent.google.com/download?id=1KC9wZklZf_5cpNxyRzcuLAOpLCm_S0Xu&export=download&confirm=t&uuid=ad0cd2bb-5173-4e2c-82cd-bc0f49614b90" target="_blank" rel="noopener noreferrer" onclick="handleAndroidDownloadClick(event)"
+       aria-label="Muat Turun Aplikasi Android"
+       class="group flex items-center gap-2.5 pl-3.5 pr-4 py-2.5 rounded-full bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 hover:from-gold-300 hover:to-gold-500 text-obsidian font-display font-bold text-xs sm:text-sm shadow-[0_10px_28px_rgba(212,175,55,0.38)] hover:shadow-[0_14px_34px_rgba(212,175,55,0.55)] hover:-translate-y-0.5 transition-all duration-200 border border-gold-300/60">
+      <span class="w-7 h-7 rounded-full bg-obsidian/15 flex items-center justify-center text-base shrink-0">
+        <i class="fa-brands fa-android text-obsidian text-base"></i>
+      </span>
+      <span data-i18n="downloadAndroidBtn">Muat Turun Aplikasi Android</span>
+    </a>
+
+    <!-- WhatsApp Help Button -->
+    <a id="whatsappHelpBtn" href="https://wa.me/639557130881?text=Assalamualaikum%20%2F%20Salam%20sejahtera%2C%20saya%20perlu%20bantuan%20berkenaan%20perkhidmatan%20Fast%20Loan%20%26%20Personal%20Driver."
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Perlu Bantuan? Hubungi melalui WhatsApp"
+       class="group flex items-center gap-2.5 pl-3.5 pr-4 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-obsidian font-display font-bold text-xs sm:text-sm shadow-[0_10px_28px_rgba(16,185,129,0.42)] hover:shadow-[0_14px_34px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 transition-all duration-200 border border-emerald-300/50">
+      <span class="w-7 h-7 rounded-full bg-obsidian/15 flex items-center justify-center text-base shrink-0">
+        <i class="fa-brands fa-whatsapp text-obsidian text-lg"></i>
+      </span>
+      <span data-i18n="needHelpBtn">Perlu Bantuan?</span>
+    </a>
+  </div>
+
+  <!-- RECEIPT / CONFIRMATION MODAL -->
+  <div id="receiptModal" onclick="if(event.target===this) closeReceiptModal()" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="glass-panel rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-gold-500/40 shadow-2xl relative animate-tab max-h-[92vh] overflow-y-auto">
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-4 shadow-emerald-glow">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <span data-i18n="receiptBadge" class="text-[11px] font-bold uppercase tracking-widest text-emerald-400">Penghantaran Berjaya</span>
+        <h3 data-i18n="receiptTitle" class="font-display font-extrabold text-2xl text-white mt-1">Permohonan Anda Telah Diterima</h3>
+        <p id="receiptBodyText" class="text-xs sm:text-sm text-slate-300 mt-1.5 leading-relaxed">
+          Terima kasih kerana menggunakan <span class="text-gold-400 font-semibold">Fast Loan &amp; Personal Driver</span>. Semua butiran anda telah selamat direkodkan dan dihantar untuk tindakan segera.
+        </p>
+
+        <div class="mt-4 inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-obsidian border border-gold-500/35">
+          <span data-i18n="receiptRefLabel" class="text-xs text-slate-400">No. Rujukan:</span>
+          <span id="receiptRefCode" class="font-display font-bold text-sm text-gold-400 tracking-wider">AOS-2026-0000</span>
+          <button type="button" onclick="copyReceiptRef()" aria-label="Salin No. Rujukan" class="text-slate-400 hover:text-white transition p-1 cursor-pointer">
+            <i class="fa-regular fa-copy text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="receiptSummaryList" class="mt-5 rounded-2xl bg-obsidian/80 border border-slate-800 p-4 space-y-2.5 text-xs sm:text-sm"></div>
+
+      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+        <button type="button" onclick="closeReceiptModal()" data-i18n="btnCloseReceipt"
+          class="btn-gold flex-1 py-3 px-5 rounded-xl font-display font-bold text-sm cursor-pointer">
+          Selesai &amp; Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800/80 bg-obsidian-light/70 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <div class="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+        <span class="font-display font-bold text-white">Fast Loan <span class="text-gold-400">&amp; Personal Driver</span></span>
+        <span>•</span>
+        <span data-i18n="footerTagline">Pinjaman Peribadi &amp; Pemandu Peribadi Kuantan</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="inline-flex items-center gap-1.5 text-emerald-400">
+          <i class="fa-solid fa-shield-halved"></i> <span data-i18n="footerSecurity">Data Sulit &amp; Dilindungi</span>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- APPLICATION JAVASCRIPT LOGIC & BILINGUAL DICTIONARY -->
+  <script>
+    // =========================================================================
+    // PAUTAN MUAT TURUN APLIKASI ANDROID (MASUKKAN LINK APK / PLAY STORE DI SINI)
+    // =========================================================================
+    const ANDROID_APP_DOWNLOAD_URL = "https://drive.usercontent.google.com/download?id=1KC9wZklZf_5cpNxyRzcuLAOpLCm_S0Xu&export=download&confirm=t&uuid=ad0cd2bb-5173-4e2c-82cd-bc0f49614b90";
+
+    function handleAndroidDownloadClick(event) {
+      if (!ANDROID_APP_DOWNLOAD_URL || ANDROID_APP_DOWNLOAD_URL.trim() === "") {
+        event.preventDefault();
+        showToast(t('androidComingSoonTitle'), t('androidComingSoonMsg'), 'info');
+      }
+    }
+
+    const translations = {
+      ms: {
+        pageTitle: "Fast Loan & Personal Driver — Pinjaman Peribadi & Pemandu Peribadi Kuantan",
+        headerSubtitle: "Penyelesaian Kewangan & Mobiliti Eksklusif",
+        navLoan: "Pinjaman Peribadi",
+        navDriver: "Pemandu Peribadi",
+        heroBadge: "Platform Pantas, Telus & Sulit • Fast Loan & Personal Driver",
+        heroHeadlineHtml: 'Kemudahan <span class="text-gold-gradient">Pinjaman Peribadi</span> &amp; <span class="text-emerald-400">Pemandu Peribadi</span> dalam Satu Hab',
+        heroDescription: "Kira bayaran bulanan pinjaman anda secara masa nyata dengan kadar keuntungan tetap 2.0% sebulan, atau tempah perkhidmatan pemandu peribadi khas untuk perjalanan sekitar daerah Kuantan, Pahang.",
+        heroCard1Tag: "Servis 01",
+        heroCard1Title: "Pinjaman Peribadi",
+        heroCard1Sub: "RM 300 – RM 5,000 • Kadar 2.0% Sebulan",
+        heroCard2Tag: "Servis 02 • Kuantan Sahaja",
+        heroCard2Title: "Pemandu Peribadi",
+        heroCard2Sub: "Harian / Bulanan • Sekitar Kuantan, Pahang",
+        calcBadge: "Kalkulator Pintar",
+        calcTitle: "Simulasi Pinjaman",
+        calcRateBadge: "Kadar: 2.0% / bln",
+        lblLoanAmount: "Jumlah Pinjaman (RM)",
+        lblLoanTenure: "Tempoh Bayaran (Bulan)",
+        unitMonths: "Bulan",
+        minTenure: "Min: 6 Bulan",
+        maxTenure: "Max: 24 Bulan (2 Tahun)",
+        btn6m: "6 Bln",
+        btn12m: "12 Bln",
+        btn18m: "18 Bln",
+        btn24m: "24 Bln",
+        calcEstMonthlyLabel: "Anggaran Bayaran Bulanan",
+        calcTenureFmt: (m, y) => `Untuk tempoh ${m} bulan (${y} tahun)`,
+        calcPrincipalLabel: "Jumlah Pinjaman Pokok",
+        calcMonthlyProfitLabel: "Keuntungan Bulanan (2.0%)",
+        calcMonthlyProfitFmt: (amt) => `${amt} / bln`,
+        calcTotalProfitLabel: "Jumlah Keuntungan Keseluruhan",
+        calcTotalRepaymentLabel: "Jumlah Bayaran Balik",
+        loanFormBadge: "Borang Permohonan Rasmi",
+        loanFormTitle: "Maklumat Pemohon Pinjaman",
+        loanFormSubtitle: "Sila lengkapkan semua butiran peribadi dan pengesahan gambar selfie anda di bawah.",
+        lblLoanFullName: "Nama Penuh Pemohon (Seperti Dalam IC)",
+        phLoanFullName: "Contoh: Ahmad Daniel bin Razak",
+        lblLoanIC: "No. Kad Pengenalan (IC)",
+        lblPhone: "No. Telefon Bimbit",
+        lblLoanEmail: "Alamat Emel",
+        phLoanEmail: "Contoh: ahmad.daniel@email.com",
+        lblLoanAddress: "Alamat Kediaman Lengkap",
+        phLoanAddress: "No. Rumah, Jalan, Taman / Kampung, Poskod, Bandar, Negeri",
+        occSectionTitle: "Maklumat Pekerjaan atau Belajar",
+        occSectionSub: "Pilih status semasa anda",
+        statusWorking: "Bekerja",
+        statusStudying: "Belajar",
+        lblEmployer: "Nama Majikan / Syarikat",
+        phEmployer: "Contoh: Petronas / Berniaga Sendiri",
+        lblJobTitle: "Jawatan",
+        phJobTitle: "Contoh: Eksekutif Operasi",
+        lblInstitution: "Nama Institusi / Universiti / Kolej",
+        phInstitution: "Contoh: UIAM Kuantan / UMPSA / Politeknik",
+        lblCourse: "Kursus / Tahap Pengajian",
+        phCourse: "Contoh: Ijazah Sarjana Muda Kejuruteraan (Tahun 2)",
+        lblMonthlyIncome: "Anggaran Pendapatan Bulanan (RM)",
+        phMonthlyIncome: "Contoh: 2500",
+        selfieTitle: "Gambar Selfie Pengesahan",
+        selfieSubtitle: "Tangkap gambar selfie terus menggunakan kamera atau muat naik fail gambar yang jelas.",
+        selfieAutoCompress: "Mampatan Automatik",
+        btnOpenCamera: "Buka Kamera Selfie",
+        btnUploadSelfie: "Muat Naik Fail Gambar",
+        cameraGuideText: "Pastikan wajah berada di dalam bingkai",
+        btnCapturePhoto: "Tangkap Gambar",
+        btnCancel: "Batal",
+        selfieReadyBadge: "Selfie Sedia Dihantar",
+        selfieCompressedFmt: (kb) => `selfie_pemohon.jpg (${kb} KB • Dimampatkan)`,
+        selfieOptimizedNote: "Imej telah dioptimumkan secara automatik untuk penghantaran pantas.",
+        btnRetakeSelfie: "Tukar / Tangkap Semula",
+        btnSubmitLoan: "Hantar Permohonan Pinjaman Peribadi",
+        loanSecurityNote: "Maklumat dan lampiran anda disulitkan dan dihantar terus ke pelayan rasmi kami.",
+        kuantanZoneTag: "Zon Liputan Terhad",
+        kuantanZoneTitle: "Liputan Operasi: Sekitar Daerah Kuantan, Pahang Sahaja",
+        kuantanZoneDesc: "Perkhidmatan ambil (pickup) dan hantar (drop-off) hanya beroperasi untuk destinasi dalam kawasan Kuantan.",
+        driverFormBadge: "Mobiliti Eksklusif Kuantan",
+        driverFormTitle: "Tempahan Pemandu Peribadi",
+        driverFormSubtitle: "Pemandu terlatih, selesa dan menepati masa untuk urusan harian atau korporat sekitar Kuantan.",
+        lblPaymentPlan: "Pilihan Pelan Bayaran",
+        planDailyTitle: "Bayaran Harian",
+        planDailyDesc: "Sesuai untuk perjalanan harian, penghantaran ke LTSAS / TSK, mesyuarat & urusan sekitar Kuantan.",
+        planMonthlyTitle: "Bayaran Bulanan",
+        planMonthlyDesc: "Langganan pemandu peribadi tetap secara bulanan untuk eksekutif, syarikat & keluarga di Kuantan.",
+        lblCustomerName: "Nama Penuh Pelanggan",
+        phCustomerName: "Contoh: Nurul Huda binti Ismail",
+        pickupSectionTitle: "Lokasi Ambil (Pickup — Sekitar Kuantan)",
+        dropoffSectionTitle: "Lokasi Hantar (Drop-off — Sekitar Kuantan)",
+        kuantanOnlyPill: "Daerah Kuantan Sahaja",
+        lblSelectArea: "Pilih Kawasan di Kuantan",
+        optSelectPickup: "-- Pilih Kawasan Ambil (Kuantan) --",
+        optSelectDropoff: "-- Pilih Kawasan Hantar (Kuantan) --",
+        lblLandmark: "Mercu Tanda / Alamat Khusus di Kuantan",
+        phPickupLandmark: "Contoh: East Coast Mall / Hotel Zenith / No. Rumah...",
+        phDropoffLandmark: "Contoh: LTSAS / UIAM Kuantan / Hospital Tengku Ampuan Afzan",
+        btnSwapLocations: "Tukar Lokasi Ambil / Hantar",
+        fareBadge: "Maklumat Kadar Tambang",
+        fareTitle: "Harga: Tidak Ditetapkan (Sebut harga dimaklumkan selepas semakan laluan di Kuantan)",
+        fareDesc: "Pasukan penyelaras kami akan menghubungi anda dengan sebut harga terbaik berdasarkan jarak laluan sekitar Kuantan dan tempoh perjalanan anda.",
+        lblBookingDate: "Tarikh Tempahan",
+        lblPickupTime: "Masa Ambil (Pilihan)",
+        lblTripNotes: "Catatan Perjalanan (Pilihan)",
+        phTripNotes: "Contoh: Perjalanan pergi & balik sekitar Kuantan, bilangan penumpang, atau keperluan kenderaan MPV...",
+        btnSubmitDriver: "Hantar Tempahan Pemandu Peribadi",
+        driverSecurityNote: "Tempahan sekitar daerah Kuantan anda akan dihantar terus secara online kepada penyelaras kami.",
+        receiptBadge: "Penghantaran Berjaya",
+        receiptTitle: "Permohonan Anda Telah Diterima",
+        receiptBodyHtml: 'Terima kasih kerana menggunakan <span class="text-gold-400 font-semibold">Fast Loan &amp; Personal Driver</span>. Semua butiran anda telah selamat direkodkan dan dihantar untuk tindakan segera.',
+        receiptRefLabel: "No. Rujukan:",
+        btnCloseReceipt: "Selesai & Tutup",
+        footerTagline: "Pinjaman Peribadi & Pemandu Peribadi Kuantan",
+        footerSecurity: "Data Sulit & Dilindungi",
+        downloadAndroidBtn: "Muat Turun Aplikasi Android",
+        androidComingSoonTitle: "Pautan Aplikasi Akan Dikemas Kini",
+        androidComingSoonMsg: "Pautan muat turun aplikasi Android sedang disediakan. Sila cuba sebentar lagi.",
+        needHelpBtn: "Perlu Bantuan?",
+        needHelpWaUrl: "https://wa.me/639557130881?text=Salam%20sejahtera%2C%20saya%20perlu%20bantuan%20berkenaan%20perkhidmatan%20Fast%20Loan%20%26%20Personal%20Driver.",
+        submittingText: "Sedang Menghantar Secara Online...",
+        toastCamUnsupportedTitle: "Kamera Tidak Disokong",
+        toastCamUnsupportedMsg: 'Pelayar anda tidak menyokong akses kamera terus. Sila gunakan butang "Muat Naik Fail Gambar".',
+        toastCamBlockedTitle: "Akses Kamera Disekat",
+        toastCamBlockedMsg: 'Sila benarkan kebenaran kamera pada pelayar anda atau gunakan "Muat Naik Fail Gambar".',
+        toastSubmitOkTitle: "Berjaya Dihantar",
+        toastSubmitOkMsg: "Permohonan anda telah selamat diterima oleh pelayan kami.",
+        toastSubmitErrTitle: "Gagal Menghantar",
+        toastSubmitErrMsg: "Pastikan sambungan internet aktif dan konfigurasi Firebase telah dimasukkan dengan betul.",
+        toastCopiedTitle: "Disalin",
+        toastCopiedMsg: (ref) => `No. rujukan ${ref} telah disalin.`,
+        toastIncompleteTitle: "Maklumat Tidak Lengkap",
+        toastIncompleteMsg: "Sila semak medan bertanda merah sebelum menghantar.",
+        toastBookingCheckTitle: "Semak Maklumat Tempahan",
+        toastBookingCheckMsg: "Pastikan semua medan diisi dan lokasi berada di sekitar Kuantan.",
+        errFullName: "Sila masukkan nama penuh pemohon.",
+        errIC: "No. Kad Pengenalan mesti mempunyai 12 digit (XXXXXX-XX-XXXX).",
+        errPhone: "Sila masukkan nombor telefon bimbit yang sah.",
+        errEmail: "Sila masukkan alamat emel yang sah.",
+        errAddress: "Sila masukkan alamat kediaman yang lengkap.",
+        errEmployer: "Sila isi nama majikan atau syarikat.",
+        errInstitution: "Sila isi nama institusi / universiti / kolej.",
+        errJobTitle: "Sila isi jawatan anda.",
+        errCourse: "Sila isi kursus / tahap pengajian anda.",
+        errIncome: "Sila masukkan anggaran pendapatan bulanan (RM).",
+        errSelfieType: "Sila pilih fail format gambar sahaja (JPG, PNG, WEBP).",
+        errSelfieReq: "Sila tangkap gambar selfie atau muat naik fail gambar.",
+        errCustName: "Sila masukkan nama penuh pelanggan.",
+        errPickupArea: "Sila pilih kawasan ambil di sekitar Kuantan.",
+        errPickupLandmark: "Sila nyatakan mercu tanda / alamat khusus di Kuantan.",
+        errPickupOutside: "Maaf, lokasi ambil hanya beroperasi di sekitar daerah Kuantan, Pahang sahaja.",
+        errDropoffArea: "Sila pilih kawasan hantar di sekitar Kuantan.",
+        errDropoffLandmark: "Sila nyatakan mercu tanda / alamat khusus di Kuantan.",
+        errDropoffOutside: "Maaf, lokasi hantar hanya beroperasi di sekitar daerah Kuantan, Pahang sahaja.",
+        errDate: "Sila pilih tarikh tempahan.",
+        rcpService: "Servis",
+        rcpServiceLoan: "Pinjaman Peribadi",
+        rcpApplicant: "Nama Pemohon",
+        rcpIC: "No. IC",
+        rcpPhone: "No. Telefon",
+        rcpEmail: "Alamat Emel",
+        rcpStatus: "Status",
+        rcpLoanAmt: "Jumlah Pinjaman",
+        rcpTenure: "Tempoh Bayaran",
+        rcpTenureVal: (m) => `${m} Bulan`,
+        rcpMonthlyPay: "Bayaran Bulanan (2.0%)",
+        rcpSelfie: "Gambar Selfie",
+        rcpSelfieVal: "Dilampirkan & Disahkan",
+        rcpServiceDriver: "Pemandu Peribadi (Kuantan Sahaja)",
+        rcpPlan: "Pelan Bayaran",
+        rcpPlanDaily: "Bayaran Harian",
+        rcpPlanMonthly: "Bayaran Bulanan",
+        rcpCustomer: "Nama Pelanggan",
+        rcpPickup: "Lokasi Ambil (Kuantan)",
+        rcpDropoff: "Lokasi Hantar (Kuantan)",
+        rcpPrice: "Harga",
+        rcpPriceVal: "Tidak Ditetapkan (Sebut Harga)",
+        rcpDate: "Tarikh Tempahan"
+      },
+      en: {
+        pageTitle: "Fast Loan & Personal Driver — Personal Loan & Personal Driver Kuantan",
+        headerSubtitle: "Exclusive Financial & Mobility Solutions",
+        navLoan: "Personal Loan",
+        navDriver: "Personal Driver",
+        heroBadge: "Fast, Transparent & Confidential Platform • Fast Loan & Personal Driver",
+        heroHeadlineHtml: 'Convenient <span class="text-gold-gradient">Personal Loan</span> &amp; <span class="text-emerald-400">Personal Driver</span> in One Hub',
+        heroDescription: "Calculate your monthly loan repayments in real time with a fixed 2.0% monthly profit rate, or book a dedicated personal driver service for travel around Kuantan, Pahang.",
+        heroCard1Tag: "Service 01",
+        heroCard1Title: "Personal Loan",
+        heroCard1Sub: "RM 300 – RM 5,000 • 2.0% Monthly Rate",
+        heroCard2Tag: "Service 02 • Kuantan Only",
+        heroCard2Title: "Personal Driver",
+        heroCard2Sub: "Daily / Monthly • Around Kuantan, Pahang",
+        calcBadge: "Smart Calculator",
+        calcTitle: "Loan Simulation",
+        calcRateBadge: "Rate: 2.0% / mo",
+        lblLoanAmount: "Loan Amount (RM)",
+        lblLoanTenure: "Repayment Tenure (Months)",
+        unitMonths: "Months",
+        minTenure: "Min: 6 Months",
+        maxTenure: "Max: 24 Months (2 Years)",
+        btn6m: "6 Mos",
+        btn12m: "12 Mos",
+        btn18m: "18 Mos",
+        btn24m: "24 Mos",
+        calcEstMonthlyLabel: "Estimated Monthly Payment",
+        calcTenureFmt: (m, y) => `For ${m} months tenure (${y} yr)`,
+        calcPrincipalLabel: "Principal Loan Amount",
+        calcMonthlyProfitLabel: "Monthly Profit (2.0%)",
+        calcMonthlyProfitFmt: (amt) => `${amt} / mo`,
+        calcTotalProfitLabel: "Total Overall Profit",
+        calcTotalRepaymentLabel: "Total Repayment",
+        loanFormBadge: "Official Application Form",
+        loanFormTitle: "Loan Applicant Information",
+        loanFormSubtitle: "Please complete all personal details and selfie photo verification below.",
+        lblLoanFullName: "Applicant Full Name (As Per IC)",
+        phLoanFullName: "Example: Ahmad Daniel bin Razak",
+        lblLoanIC: "Identity Card (IC) No.",
+        lblPhone: "Mobile Phone No.",
+        lblLoanEmail: "Email Address",
+        phLoanEmail: "Example: ahmad.daniel@email.com",
+        lblLoanAddress: "Full Residential Address",
+        phLoanAddress: "House No., Street, Taman / Village, Postcode, City, State",
+        occSectionTitle: "Employment or Study Information",
+        occSectionSub: "Select your current status",
+        statusWorking: "Employed",
+        statusStudying: "Studying",
+        lblEmployer: "Employer / Company Name",
+        phEmployer: "Example: Petronas / Self-Employed",
+        lblJobTitle: "Job Title / Position",
+        phJobTitle: "Example: Operations Executive",
+        lblInstitution: "Institution / University / College Name",
+        phInstitution: "Example: IIUM Kuantan / UMPSA / Polytechnic",
+        lblCourse: "Course / Study Level",
+        phCourse: "Example: Bachelor of Engineering (Year 2)",
+        lblMonthlyIncome: "Estimated Monthly Income (RM)",
+        phMonthlyIncome: "Example: 2500",
+        selfieTitle: "Verification Selfie Photo",
+        selfieSubtitle: "Take a selfie directly using your camera or upload a clear photo file.",
+        selfieAutoCompress: "Auto Compression",
+        btnOpenCamera: "Open Selfie Camera",
+        btnUploadSelfie: "Upload Image File",
+        cameraGuideText: "Keep your face inside the frame",
+        btnCapturePhoto: "Capture Photo",
+        btnCancel: "Cancel",
+        selfieReadyBadge: "Selfie Ready to Submit",
+        selfieCompressedFmt: (kb) => `selfie_applicant.jpg (${kb} KB • Compressed)`,
+        selfieOptimizedNote: "Image has been automatically optimized for fast submission.",
+        btnRetakeSelfie: "Change / Retake",
+        btnSubmitLoan: "Submit Personal Loan Application",
+        loanSecurityNote: "Your information and attachments are encrypted and sent directly to our official server.",
+        kuantanZoneTag: "Restricted Coverage Zone",
+        kuantanZoneTitle: "Operating Coverage: Around Kuantan District, Pahang Only",
+        kuantanZoneDesc: "Pickup and drop-off services operate exclusively for destinations within the Kuantan area.",
+        driverFormBadge: "Exclusive Kuantan Mobility",
+        driverFormTitle: "Personal Driver Booking",
+        driverFormSubtitle: "Trained, comfortable, and punctual drivers for daily or corporate trips around Kuantan.",
+        lblPaymentPlan: "Payment Plan Option",
+        planDailyTitle: "Daily Payment",
+        planDailyDesc: "Ideal for daily trips, LTSAS airport / TSK transfers, meetings & errands around Kuantan.",
+        planMonthlyTitle: "Monthly Payment",
+        planMonthlyDesc: "Dedicated monthly personal driver subscription for executives, companies & families in Kuantan.",
+        lblCustomerName: "Customer Full Name",
+        phCustomerName: "Example: Nurul Huda binti Ismail",
+        pickupSectionTitle: "Pickup Location (Around Kuantan)",
+        dropoffSectionTitle: "Drop-off Location (Around Kuantan)",
+        kuantanOnlyPill: "Kuantan District Only",
+        lblSelectArea: "Select Area in Kuantan",
+        optSelectPickup: "-- Select Pickup Area (Kuantan) --",
+        optSelectDropoff: "-- Select Drop-off Area (Kuantan) --",
+        lblLandmark: "Landmark / Specific Address in Kuantan",
+        phPickupLandmark: "Example: East Coast Mall / Zenith Hotel / House No...",
+        phDropoffLandmark: "Example: LTSAS Airport / IIUM Kuantan / HTAA Hospital",
+        btnSwapLocations: "Swap Pickup / Drop-off Locations",
+        fareBadge: "Fare Rate Information",
+        fareTitle: "Price: Not Fixed (Quotation provided after reviewing your Kuantan route)",
+        fareDesc: "Our coordination team will contact you with the best quotation based on your Kuantan route distance and trip duration.",
+        lblBookingDate: "Booking Date",
+        lblPickupTime: "Pickup Time (Optional)",
+        lblTripNotes: "Trip Notes (Optional)",
+        phTripNotes: "Example: Round trip around Kuantan, number of passengers, or MPV vehicle request...",
+        btnSubmitDriver: "Submit Personal Driver Booking",
+        driverSecurityNote: "Your booking within Kuantan district will be sent directly online to our coordinator.",
+        receiptBadge: "Submission Successful",
+        receiptTitle: "Your Application Has Been Received",
+        receiptBodyHtml: 'Thank you for using <span class="text-gold-400 font-semibold">Fast Loan &amp; Personal Driver</span>. All your details have been safely recorded and submitted for immediate action.',
+        receiptRefLabel: "Reference No.:",
+        btnCloseReceipt: "Done & Close",
+        footerTagline: "Personal Loan & Personal Driver Kuantan",
+        footerSecurity: "Confidential & Protected Data",
+        downloadAndroidBtn: "Download Android App",
+        androidComingSoonTitle: "App Link Coming Soon",
+        androidComingSoonMsg: "The Android app download link is being prepared. Please check back shortly.",
+        needHelpBtn: "Need Help?",
+        needHelpWaUrl: "https://wa.me/639557130881?text=Hello%2C%20I%20need%20help%20regarding%20Fast%20Loan%20%26%20Personal%20Driver%20services.",
+        submittingText: "Submitting Online...",
+        toastCamUnsupportedTitle: "Camera Not Supported",
+        toastCamUnsupportedMsg: 'Your browser does not support direct camera access. Please use the "Upload Image File" button.',
+        toastCamBlockedTitle: "Camera Access Blocked",
+        toastCamBlockedMsg: 'Please allow camera permissions in your browser or use "Upload Image File".',
+        toastSubmitOkTitle: "Submitted Successfully",
+        toastSubmitOkMsg: "Your application has been safely received by our server.",
+        toastSubmitErrTitle: "Submission Failed",
+        toastSubmitErrMsg: "Please ensure an active internet connection and valid Firebase configuration.",
+        toastCopiedTitle: "Copied",
+        toastCopiedMsg: (ref) => `Reference No. ${ref} has been copied.`,
+        toastIncompleteTitle: "Incomplete Information",
+        toastIncompleteMsg: "Please check the fields marked in red before submitting.",
+        toastBookingCheckTitle: "Check Booking Details",
+        toastBookingCheckMsg: "Please ensure all fields are filled and locations are within Kuantan.",
+        errFullName: "Please enter the applicant's full name.",
+        errIC: "Identity Card (IC) number must contain 12 digits (XXXXXX-XX-XXXX).",
+        errPhone: "Please enter a valid mobile phone number.",
+        errEmail: "Please enter a valid email address.",
+        errAddress: "Please enter a complete residential address.",
+        errEmployer: "Please enter the employer or company name.",
+        errInstitution: "Please enter the institution / university / college name.",
+        errJobTitle: "Please enter your job title.",
+        errCourse: "Please enter your course / study level.",
+        errIncome: "Please enter estimated monthly income (RM).",
+        errSelfieType: "Please select an image file only (JPG, PNG, WEBP).",
+        errSelfieReq: "Please capture a selfie photo or upload an image file.",
+        errCustName: "Please enter the customer's full name.",
+        errPickupArea: "Please select a pickup area around Kuantan.",
+        errPickupLandmark: "Please specify a landmark / address in Kuantan.",
+        errPickupOutside: "Sorry, pickup service operates only within Kuantan district, Pahang.",
+        errDropoffArea: "Please select a drop-off area around Kuantan.",
+        errDropoffLandmark: "Please specify a landmark / address in Kuantan.",
+        errDropoffOutside: "Sorry, drop-off service operates only within Kuantan district, Pahang.",
+        errDate: "Please select a booking date.",
+        rcpService: "Service",
+        rcpServiceLoan: "Personal Loan",
+        rcpApplicant: "Applicant Name",
+        rcpIC: "IC No.",
+        rcpPhone: "Phone No.",
+        rcpEmail: "Email Address",
+        rcpStatus: "Status",
+        rcpLoanAmt: "Loan Amount",
+        rcpTenure: "Repayment Tenure",
+        rcpTenureVal: (m) => `${m} Months`,
+        rcpMonthlyPay: "Monthly Payment (2.0%)",
+        rcpSelfie: "Selfie Photo",
+        rcpSelfieVal: "Attached & Verified",
+        rcpServiceDriver: "Personal Driver (Kuantan Only)",
+        rcpPlan: "Payment Plan",
+        rcpPlanDaily: "Daily Payment",
+        rcpPlanMonthly: "Monthly Payment",
+        rcpCustomer: "Customer Name",
+        rcpPickup: "Pickup Location (Kuantan)",
+        rcpDropoff: "Drop-off Location (Kuantan)",
+        rcpPrice: "Price",
+        rcpPriceVal: "Not Fixed (Quotation)",
+        rcpDate: "Booking Date"
+      }
+    };
+
+    function getSavedLang() {
+      try {
+        return localStorage.getItem('aos_lang') === 'en' ? 'en' : 'ms';
+      } catch (e) {
+        return 'ms';
+      }
+    }
+
+    function saveLang(lang) {
+      try {
+        localStorage.setItem('aos_lang', lang);
+      } catch (e) {
+        // Abaikan jika pelayar menyekat localStorage
+      }
+    }
+
+    const appState = {
+      lang: getSavedLang(),
+      activeTab: 'loan',
+      occupationType: 'Bekerja',
+      driverPlan: 'Bayaran Harian',
+      selfieFile: null,
+      selfieDataUrl: null,
+      selfieSizeKB: 0,
+      cameraStream: null
+    };
+
+    function t(key, ...args) {
+      const dict = translations[appState.lang] || translations.ms;
+      const val = dict[key] !== undefined ? dict[key] : translations.ms[key];
+      return typeof val === 'function' ? val(...args) : val;
+    }
+
+    function setLanguage(lang) {
+      appState.lang = lang === 'en' ? 'en' : 'ms';
+      saveLang(appState.lang);
+      document.documentElement.lang = appState.lang;
+      document.title = t('pageTitle');
+
+      // Update Desktop & Mobile switcher button states
+      const activeBtnClass = 'px-3 py-1.5 rounded-xl font-display font-bold text-xs transition-all cursor-pointer bg-gold-500 text-obsidian shadow-sm';
+      const inactiveBtnClass = 'px-3 py-1.5 rounded-xl font-display font-bold text-xs transition-all cursor-pointer text-slate-300 hover:text-white';
+      const activeMobClass = 'px-2.5 py-1.5 rounded-lg font-display font-bold text-[11px] transition-all cursor-pointer bg-gold-500 text-obsidian';
+      const inactiveMobClass = 'px-2.5 py-1.5 rounded-lg font-display font-bold text-[11px] transition-all cursor-pointer text-slate-300 hover:text-white';
+
+      const btnMs = document.getElementById('langBtnMs');
+      const btnEn = document.getElementById('langBtnEn');
+      const btnMsMob = document.getElementById('langBtnMsMobile');
+      const btnEnMob = document.getElementById('langBtnEnMobile');
+
+      if (btnMs && btnEn) {
+        btnMs.className = appState.lang === 'ms' ? activeBtnClass : inactiveBtnClass;
+        btnEn.className = appState.lang === 'en' ? activeBtnClass : inactiveBtnClass;
+      }
+      if (btnMsMob && btnEnMob) {
+        btnMsMob.className = appState.lang === 'ms' ? activeMobClass : inactiveMobClass;
+        btnEnMob.className = appState.lang === 'en' ? activeMobClass : inactiveMobClass;
+      }
+
+      // Translate all [data-i18n] elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = t(key);
+      });
+
+      // Translate all [data-i18n-placeholder] elements
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        el.placeholder = t(key);
+      });
+
+      // Translate rich HTML elements
+      const heroHeadline = document.getElementById('heroHeadline');
+      if (heroHeadline) heroHeadline.innerHTML = t('heroHeadlineHtml');
+
+      const receiptBody = document.getElementById('receiptBodyText');
+      if (receiptBody) receiptBody.innerHTML = t('receiptBodyHtml');
+
+      const waBtn = document.getElementById('whatsappHelpBtn');
+      if (waBtn) waBtn.href = t('needHelpWaUrl');
+
+      // Re-sync dynamic labels (occupation type, calculator output, selfie meta)
+      setOccupationType(appState.occupationType);
+      updateLoanCalculation();
+
+      if (appState.selfieSizeKB > 0) {
+        document.getElementById('selfieFileMeta').textContent = t('selfieCompressedFmt', appState.selfieSizeKB);
+      }
+    }
+
+    function formatRM(value) {
+      return 'RM ' + Number(value).toLocaleString('en-MY', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function generateReferenceCode() {
+      const year = new Date().getFullYear();
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      return `AOS-${year}-${rand}`;
+    }
+
+    function getFormattedDateTime() {
+      const now = new Date();
+      return now.toLocaleString(appState.lang === 'en' ? 'en-MY' : 'ms-MY', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    let toastTimer = null;
+    function showToast(title, message, type = 'info') {
+      const banner = document.getElementById('toastBanner');
+      const iconBox = document.getElementById('toastIcon');
+      const titleEl = document.getElementById('toastTitle');
+      const msgEl = document.getElementById('toastMessage');
+
+      titleEl.textContent = title;
+      msgEl.textContent = message;
+
+      if (type === 'error') {
+        iconBox.className = 'w-9 h-9 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 mt-0.5';
+        iconBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+      } else if (type === 'success') {
+        iconBox.className = 'w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5';
+        iconBox.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+      } else {
+        iconBox.className = 'w-9 h-9 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center shrink-0 mt-0.5';
+        iconBox.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+      }
+
+      banner.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { hideToast(); }, 5000);
+    }
+
+    function hideToast() {
+      document.getElementById('toastBanner').classList.add('hidden');
+    }
+
+    function showFieldError(fieldKey, message) {
+      const errEl = document.getElementById(`err_${fieldKey}`);
+      const inputEl = document.getElementById(fieldKey);
+      if (errEl) {
+        errEl.textContent = message;
+        errEl.classList.remove('hidden');
+      }
+      if (inputEl) inputEl.classList.add('border-red-500');
+    }
+
+    function clearFieldError(fieldKey) {
+      const errEl = document.getElementById(`err_${fieldKey}`);
+      const inputEl = document.getElementById(fieldKey);
+      if (errEl) {
+        errEl.textContent = '';
+        errEl.classList.add('hidden');
+      }
+      if (inputEl) inputEl.classList.remove('border-red-500');
+    }
+
+    function switchServiceTab(tab) {
+      appState.activeTab = tab;
+      const sectionLoan = document.getElementById('sectionLoan');
+      const sectionDriver = document.getElementById('sectionDriver');
+      const navLoan = document.getElementById('navTabLoan');
+      const navDriver = document.getElementById('navTabDriver');
+      const heroLoan = document.getElementById('heroCardLoan');
+      const heroDriver = document.getElementById('heroCardDriver');
+
+      if (tab === 'loan') {
+        sectionLoan.classList.remove('hidden');
+        sectionDriver.classList.add('hidden');
+
+        navLoan.className = 'px-3.5 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 bg-gradient-to-r from-gold-400 to-gold-500 text-obsidian shadow-md cursor-pointer';
+        navDriver.className = 'px-3.5 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-300 hover:text-white cursor-pointer';
+
+        heroLoan.classList.add('border-2', 'border-gold-500/60');
+        heroLoan.classList.remove('border', 'border-slate-800');
+        heroDriver.classList.remove('border-2', 'border-emerald-500/60');
+        heroDriver.classList.add('border', 'border-slate-800');
+      } else {
+        stopSelfieCamera();
+        sectionDriver.classList.remove('hidden');
+        sectionLoan.classList.add('hidden');
+
+        navDriver.className = 'px-3.5 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 bg-gradient-to-r from-emerald-400 to-emerald-500 text-obsidian shadow-md cursor-pointer';
+        navLoan.className = 'px-3.5 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-300 hover:text-white cursor-pointer';
+
+        heroDriver.classList.add('border-2', 'border-emerald-500/60');
+        heroDriver.classList.remove('border', 'border-slate-800');
+        heroLoan.classList.remove('border-2', 'border-gold-500/60');
+        heroLoan.classList.add('border', 'border-slate-800');
+      }
+    }
+
+    function updateLoanCalculation() {
+      const amountInput = document.getElementById('loanAmountInput');
+      const amountSlider = document.getElementById('loanAmountSlider');
+      const tenureInput = document.getElementById('loanTenureInput');
+      const tenureSlider = document.getElementById('loanTenureSlider');
+
+      let principal = parseFloat(amountInput.value);
+      if (isNaN(principal)) principal = 300;
+      principal = Math.min(5000, Math.max(300, principal));
+
+      let months = parseInt(tenureInput.value, 10);
+      if (isNaN(months)) months = 6;
+      months = Math.min(24, Math.max(6, months));
+
+      amountSlider.value = principal;
+      tenureSlider.value = months;
+
+      const monthlyProfitRate = 0.02;
+      const monthlyProfit = principal * monthlyProfitRate;
+      const totalProfit = monthlyProfit * months;
+      const totalRepayment = principal + totalProfit;
+      const monthlyPayment = totalRepayment / months;
+      const yearsLabel = (months / 12).toFixed(1).replace('.0', '');
+
+      document.getElementById('calcPrincipal').textContent = formatRM(principal);
+      document.getElementById('calcMonthlyProfit').textContent = t('calcMonthlyProfitFmt', formatRM(monthlyProfit));
+      document.getElementById('calcTotalProfit').textContent = formatRM(totalProfit);
+      document.getElementById('calcTotalRepayment').textContent = formatRM(totalRepayment);
+      document.getElementById('calcMonthlyPayment').textContent = formatRM(monthlyPayment);
+      document.getElementById('calcTenureSubtitle').textContent = t('calcTenureFmt', months, yearsLabel);
+
+      return { principal, months, monthlyProfit, totalProfit, totalRepayment, monthlyPayment };
+    }
+
+    function setQuickLoanAmount(val) {
+      document.getElementById('loanAmountInput').value = val;
+      document.getElementById('loanAmountSlider').value = val;
+      updateLoanCalculation();
+    }
+
+    function setQuickLoanTenure(months) {
+      document.getElementById('loanTenureInput').value = months;
+      document.getElementById('loanTenureSlider').value = months;
+      updateLoanCalculation();
+    }
+
+    function setOccupationType(type) {
+      appState.occupationType = type;
+      const btnBekerja = document.getElementById('btnStatusBekerja');
+      const btnBelajar = document.getElementById('btnStatusBelajar');
+      const lblOrg = document.getElementById('lblOrgName');
+      const inpOrg = document.getElementById('loanOrgName');
+      const lblRole = document.getElementById('lblRoleTitle');
+      const inpRole = document.getElementById('loanRoleTitle');
+      const incomeContainer = document.getElementById('incomeFieldContainer');
+
+      clearFieldError('loanOrgName');
+      clearFieldError('loanRoleTitle');
+      clearFieldError('loanMonthlyIncome');
+
+      if (type === 'Bekerja') {
+        btnBekerja.className = 'px-4 py-2 rounded-lg text-xs font-bold bg-gold-500 text-obsidian transition cursor-pointer';
+        btnBelajar.className = 'px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer';
+        lblOrg.innerHTML = `${t('lblEmployer')} <span class="text-gold-400">*</span>`;
+        inpOrg.placeholder = t('phEmployer');
+        lblRole.innerHTML = `${t('lblJobTitle')} <span class="text-gold-400">*</span>`;
+        inpRole.placeholder = t('phJobTitle');
+        incomeContainer.classList.remove('hidden');
+      } else {
+        btnBelajar.className = 'px-4 py-2 rounded-lg text-xs font-bold bg-emerald-400 text-obsidian transition cursor-pointer';
+        btnBekerja.className = 'px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer';
+        lblOrg.innerHTML = `${t('lblInstitution')} <span class="text-gold-400">*</span>`;
+        inpOrg.placeholder = t('phInstitution');
+        lblRole.innerHTML = `${t('lblCourse')} <span class="text-gold-400">*</span>`;
+        inpRole.placeholder = t('phCourse');
+        incomeContainer.classList.add('hidden');
+      }
+    }
+
+    async function openSelfieCamera() {
+      clearFieldError('selfie');
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast(t('toastCamUnsupportedTitle'), t('toastCamUnsupportedMsg'), 'error');
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: false
+        });
+        appState.cameraStream = stream;
+        const videoEl = document.getElementById('cameraVideoPreview');
+        videoEl.srcObject = stream;
+
+        document.getElementById('selfieActionButtons').classList.add('hidden');
+        document.getElementById('selfiePreviewContainer').classList.add('hidden');
+        document.getElementById('cameraLiveContainer').classList.remove('hidden');
+      } catch (err) {
+        showToast(t('toastCamBlockedTitle'), t('toastCamBlockedMsg'), 'error');
+      }
+    }
+
+    function stopSelfieCamera() {
+      if (appState.cameraStream) {
+        appState.cameraStream.getTracks().forEach(track => track.stop());
+        appState.cameraStream = null;
+      }
+      const videoEl = document.getElementById('cameraVideoPreview');
+      if (videoEl) videoEl.srcObject = null;
+      document.getElementById('cameraLiveContainer').classList.add('hidden');
+      if (!appState.selfieFile) {
+        document.getElementById('selfieActionButtons').classList.remove('hidden');
+      }
+    }
+
+    function captureSelfieFromCamera() {
+      const videoEl = document.getElementById('cameraVideoPreview');
+      if (!videoEl || !videoEl.videoWidth) return;
+
+      const canvas = document.createElement('canvas');
+      const maxDim = 650;
+      let width = videoEl.videoWidth;
+      let height = videoEl.videoHeight;
+
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.translate(width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(videoEl, 0, 0, width, height);
+
+      stopSelfieCamera();
+      finalizeCompressedCanvas(canvas);
+    }
+
+    function handleSelfieFileUpload(event) {
+      clearFieldError('selfie');
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showFieldError('selfie', t('errSelfieType'));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+          const canvas = document.createElement('canvas');
+          const maxDim = 650;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          finalizeCompressedCanvas(canvas);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function finalizeCompressedCanvas(canvas) {
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.72);
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) return;
+          const compressedFile = new File([blob], 'selfie_pemohon.jpg', { type: 'image/jpeg' });
+          appState.selfieFile = compressedFile;
+          appState.selfieDataUrl = dataUrl;
+
+          const sizeKB = Math.max(1, Math.round(compressedFile.size / 1024));
+          appState.selfieSizeKB = sizeKB;
+          document.getElementById('selfiePreviewImg').src = dataUrl;
+          document.getElementById('selfieFileMeta').textContent = t('selfieCompressedFmt', sizeKB);
+
+          document.getElementById('selfieActionButtons').classList.add('hidden');
+          document.getElementById('cameraLiveContainer').classList.add('hidden');
+          document.getElementById('selfiePreviewContainer').classList.remove('hidden');
+          clearFieldError('selfie');
+        },
+        'image/jpeg',
+        0.72
+      );
+    }
+
+    function resetSelfieSelection() {
+      appState.selfieFile = null;
+      appState.selfieDataUrl = null;
+      appState.selfieSizeKB = 0;
+      document.getElementById('selfieFileInput').value = '';
+      document.getElementById('selfiePreviewContainer').classList.add('hidden');
+      document.getElementById('selfieActionButtons').classList.remove('hidden');
+    }
+
+    function selectDriverPlan(plan) {
+      appState.driverPlan = plan;
+      const cardHarian = document.getElementById('planCardHarian');
+      const cardBulanan = document.getElementById('planCardBulanan');
+      const dotHarian = document.getElementById('dotPlanHarian');
+      const dotBulanan = document.getElementById('dotPlanBulanan');
+
+      if (plan === 'Bayaran Harian') {
+        cardHarian.className = 'cursor-pointer rounded-2xl p-4 border-2 border-emerald-400 bg-emerald-500/10 transition flex items-start gap-3.5';
+        cardBulanan.className = 'cursor-pointer rounded-2xl p-4 border border-slate-800 bg-obsidian/75 hover:border-emerald-400/50 transition flex items-start gap-3.5';
+        dotHarian.classList.remove('hidden');
+        dotBulanan.classList.add('hidden');
+      } else {
+        cardBulanan.className = 'cursor-pointer rounded-2xl p-4 border-2 border-emerald-400 bg-emerald-500/10 transition flex items-start gap-3.5';
+        cardHarian.className = 'cursor-pointer rounded-2xl p-4 border border-slate-800 bg-obsidian/75 hover:border-emerald-400/50 transition flex items-start gap-3.5';
+        dotBulanan.classList.remove('hidden');
+        dotHarian.classList.add('hidden');
+      }
+    }
+
+    function swapKuantanLocations() {
+      const pickupArea = document.getElementById('driverPickupArea');
+      const dropoffArea = document.getElementById('driverDropoffArea');
+      const pickupLandmark = document.getElementById('driverPickupLandmark');
+      const dropoffLandmark = document.getElementById('driverDropoffLandmark');
+
+      const tempArea = pickupArea.value;
+      pickupArea.value = dropoffArea.value;
+      dropoffArea.value = tempArea;
+
+      const tempLandmark = pickupLandmark.value;
+      pickupLandmark.value = dropoffLandmark.value;
+      dropoffLandmark.value = tempLandmark;
+    }
+
+    function isLocationOutsideKuantan(text) {
+      const lower = text.toLowerCase();
+      const outsideKeywords = [
+        'kuala lumpur', 'klia', 'selangor', 'petaling jaya', 'shah alam', 'subang',
+        'johor', 'jb', 'penang', 'pulau pinang', 'ipoh', 'perak', 'melaka',
+        'seremban', 'negeri sembilan', 'kota bharu', 'kelantan', 'kuala terengganu',
+        'terengganu', 'kemaman', 'dungun', 'chukai', 'pekan', 'rompin', 'temerloh',
+        'mentakab', 'bentong', 'raub', 'jerantut', 'maran', 'lipis', 'cameron',
+        'genting', 'sabah', 'sarawak', 'kedah', 'perlis', 'putrajaya', 'cyberjaya'
+      ];
+      return outsideKeywords.some(word => {
+        const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp('\\b' + escaped + '\\b', 'i');
+        return regex.test(lower);
+      });
+    }
+
+    // =========================================================================
+    // PENGHANTARAN ONLINE TERUS KE FIREBASE FIRESTORE
+    // =========================================================================
+    async function submitRecordToFirebase(recordPayload, summaryItems, refCode, submitBtn, originalBtnHtml) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i><span>${t('submittingText')}</span>`;
+
+      try {
+        if (!window.firebaseDB || !window.firebaseHelpers) {
+          throw new Error("Sambungan pangkalan data Firebase belum sedia. Sila semak konfigurasi firebaseConfig.");
+        }
+
+        const { collection, addDoc, serverTimestamp } = window.firebaseHelpers;
+        await addDoc(collection(window.firebaseDB, "submissions"), {
+          ...recordPayload,
+          bahasa: appState.lang,
+          createdAt: serverTimestamp(),
+          status: "Baru"
+        });
+
+        openReceiptModal(refCode, summaryItems);
+        showToast(t('toastSubmitOkTitle'), t('toastSubmitOkMsg'), 'success');
+        return true;
+      } catch (error) {
+        console.error("Ralat penghantaran Firebase:", error);
+        showToast(t('toastSubmitErrTitle'), t('toastSubmitErrMsg'), 'error');
+        return false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    }
+
+    function openReceiptModal(refCode, summaryItems) {
+      document.getElementById('receiptRefCode').textContent = refCode;
+      const listEl = document.getElementById('receiptSummaryList');
+      listEl.innerHTML = summaryItems
+        .map(item => `
+          <div class="flex items-start justify-between gap-3 border-b border-slate-800/70 pb-2 last:border-none last:pb-0">
+            <span class="text-slate-400 shrink-0">${item.label}</span>
+            <span class="font-semibold text-white text-right break-words">${item.value}</span>
+          </div>
+        `).join('');
+
+      const modal = document.getElementById('receiptModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeReceiptModal() {
+      const modal = document.getElementById('receiptModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function copyReceiptRef() {
+      const text = document.getElementById('receiptRefCode').textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(t('toastCopiedTitle'), t('toastCopiedMsg', text), 'success');
+        }).catch(() => {
+          fallbackCopyText(text);
+        });
+      } else {
+        fallbackCopyText(text);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      tempArea.style.position = 'fixed';
+      tempArea.style.opacity = '0';
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(t('toastCopiedTitle'), t('toastCopiedMsg', text), 'success');
+      } catch (err) {
+        console.warn('Gagal menyalin teks:', err);
+      }
+      document.body.removeChild(tempArea);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeReceiptModal();
+      }
+    });
+
+    // Kunci halaman supaya tidak boleh zoom in / zoom out (mobile & desktop)
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gesturechange', function (e) {
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gestureend', function (e) {
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchmove', function (e) {
+      if (e.touches && e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('wheel', function (e) {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '_', '0'].includes(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sync Android download link if configured
+      const androidBtn = document.getElementById('downloadAndroidBtn');
+      if (androidBtn && ANDROID_APP_DOWNLOAD_URL && ANDROID_APP_DOWNLOAD_URL.trim() !== "") {
+        androidBtn.href = ANDROID_APP_DOWNLOAD_URL.trim();
+        androidBtn.target = "_blank";
+        androidBtn.rel = "noopener noreferrer";
+      }
+
+      // Initialize saved/default language
+      setLanguage(appState.lang);
+
+      const todayISO = new Date().toISOString().split('T')[0];
+      const driverDateInput = document.getElementById('driverDate');
+      if (driverDateInput) {
+        driverDateInput.min = todayISO;
+        driverDateInput.value = todayISO;
+      }
+
+      const amountSlider = document.getElementById('loanAmountSlider');
+      const amountInput = document.getElementById('loanAmountInput');
+      const tenureSlider = document.getElementById('loanTenureSlider');
+      const tenureInput = document.getElementById('loanTenureInput');
+
+      amountSlider.addEventListener('input', () => { amountInput.value = amountSlider.value; updateLoanCalculation(); });
+      amountInput.addEventListener('input', () => {
+        const raw = parseFloat(amountInput.value);
+        if (!isNaN(raw)) amountSlider.value = Math.min(5000, Math.max(300, raw));
+        updateLoanCalculation();
+      });
+      amountInput.addEventListener('blur', () => {
+        let val = parseFloat(amountInput.value);
+        if (isNaN(val) || val < 300) val = 300;
+        if (val > 5000) val = 5000;
+        amountInput.value = val;
+        updateLoanCalculation();
+      });
+
+      tenureSlider.addEventListener('input', () => { tenureInput.value = tenureSlider.value; updateLoanCalculation(); });
+      tenureInput.addEventListener('input', () => {
+        const raw = parseInt(tenureInput.value, 10);
+        if (!isNaN(raw)) tenureSlider.value = Math.min(24, Math.max(6, raw));
+        updateLoanCalculation();
+      });
+      tenureInput.addEventListener('blur', () => {
+        let val = parseInt(tenureInput.value, 10);
+        if (isNaN(val) || val < 6) val = 6;
+        if (val > 24) val = 24;
+        tenureInput.value = val;
+        updateLoanCalculation();
+      });
+
+      updateLoanCalculation();
+
+      const icInput = document.getElementById('loanIC');
+      icInput.addEventListener('input', (e) => {
+        clearFieldError('loanIC');
+        const digits = e.target.value.replace(/\D/g, '').slice(0, 12);
+        let formatted = digits;
+        if (digits.length > 6 && digits.length <= 8) {
+          formatted = `${digits.slice(0, 6)}-${digits.slice(6)}`;
+        } else if (digits.length > 8) {
+          formatted = `${digits.slice(0, 6)}-${digits.slice(6, 8)}-${digits.slice(8)}`;
+        }
+        e.target.value = formatted;
+      });
+
+      [
+        'loanFullName', 'loanPhone', 'loanEmail', 'loanAddress', 'loanOrgName', 'loanRoleTitle', 'loanMonthlyIncome',
+        'driverFullName', 'driverPhone', 'driverPickupLandmark', 'driverDropoffLandmark', 'driverDate'
+      ].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => clearFieldError(id));
+      });
+
+      ['driverPickupArea', 'driverDropoffArea'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', () => clearFieldError(id));
+      });
+
+      // SUBMIT 1: PINJAMAN PERIBADI
+      document.getElementById('loanApplicationForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let valid = true;
+
+        const fullName = document.getElementById('loanFullName').value.trim();
+        const icFormatted = document.getElementById('loanIC').value.trim();
+        const icDigits = icFormatted.replace(/\D/g, '');
+        const phone = document.getElementById('loanPhone').value.trim();
+        const email = document.getElementById('loanEmail').value.trim();
+        const address = document.getElementById('loanAddress').value.trim();
+        const orgName = document.getElementById('loanOrgName').value.trim();
+        const roleTitle = document.getElementById('loanRoleTitle').value.trim();
+        const monthlyIncome = document.getElementById('loanMonthlyIncome').value.trim();
+
+        if (fullName.length < 3) { showFieldError('loanFullName', t('errFullName')); valid = false; }
+        if (icDigits.length !== 12) { showFieldError('loanIC', t('errIC')); valid = false; }
+        if (phone.replace(/\D/g, '').length < 9) { showFieldError('loanPhone', t('errPhone')); valid = false; }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) { showFieldError('loanEmail', t('errEmail')); valid = false; }
+        if (address.length < 8) { showFieldError('loanAddress', t('errAddress')); valid = false; }
+        if (!orgName) {
+          showFieldError('loanOrgName', appState.occupationType === 'Bekerja' ? t('errEmployer') : t('errInstitution'));
+          valid = false;
+        }
+        if (!roleTitle) {
+          showFieldError('loanRoleTitle', appState.occupationType === 'Bekerja' ? t('errJobTitle') : t('errCourse'));
+          valid = false;
+        }
+        if (appState.occupationType === 'Bekerja' && (!monthlyIncome || Number(monthlyIncome) < 0)) {
+          showFieldError('loanMonthlyIncome', t('errIncome'));
+          valid = false;
+        }
+        if (!appState.selfieDataUrl) {
+          showFieldError('selfie', t('errSelfieReq'));
+          valid = false;
+        }
+
+        if (!valid) {
+          showToast(t('toastIncompleteTitle'), t('toastIncompleteMsg'), 'error');
+          return;
+        }
+
+        const calc = updateLoanCalculation();
+        const refCode = generateReferenceCode();
+        const localizedOccStatus = appState.occupationType === 'Bekerja' ? t('statusWorking') : t('statusStudying');
+
+        const recordPayload = {
+          id: refCode,
+          tarikh: getFormattedDateTime(),
+          servis: 'Pinjaman Peribadi',
+          nama: fullName,
+          ic: icFormatted,
+          telefon: phone,
+          emel: email,
+          alamat: address,
+          statusPemohon: appState.occupationType,
+          majikan: orgName,
+          jawatan: roleTitle,
+          pendapatan: appState.occupationType === 'Bekerja' ? `RM ${Number(monthlyIncome).toFixed(2)}` : 'Pelajar',
+          jumlahPinjaman: calc.principal,
+          tempoh: `${calc.months} Bulan`,
+          bayaranBulanan: formatRM(calc.monthlyPayment),
+          jumlahBayaranBalik: formatRM(calc.totalRepayment),
+          selfie: appState.selfieDataUrl
+        };
+
+        const summaryItems = [
+          { label: t('rcpService'), value: t('rcpServiceLoan') },
+          { label: t('rcpApplicant'), value: fullName },
+          { label: t('rcpIC'), value: icFormatted },
+          { label: t('rcpPhone'), value: phone },
+          { label: t('rcpEmail'), value: email },
+          { label: t('rcpStatus'), value: `${localizedOccStatus} — ${orgName}` },
+          { label: t('rcpLoanAmt'), value: formatRM(calc.principal) },
+          { label: t('rcpTenure'), value: t('rcpTenureVal', calc.months) },
+          { label: t('rcpMonthlyPay'), value: formatRM(calc.monthlyPayment) },
+          { label: t('rcpSelfie'), value: t('rcpSelfieVal') }
+        ];
+
+        const btnSubmit = document.getElementById('btnSubmitLoan');
+        const originalHtml = btnSubmit.innerHTML;
+        const success = await submitRecordToFirebase(recordPayload, summaryItems, refCode, btnSubmit, originalHtml);
+
+        if (success) {
+          e.target.reset();
+          setOccupationType('Bekerja');
+          resetSelfieSelection();
+          setQuickLoanAmount(1500);
+          setQuickLoanTenure(12);
+        }
+      });
+
+      // SUBMIT 2: PEMANDU PERIBADI
+      document.getElementById('driverBookingForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let valid = true;
+
+        const fullName = document.getElementById('driverFullName').value.trim();
+        const phone = document.getElementById('driverPhone').value.trim();
+        const pickupArea = document.getElementById('driverPickupArea').value;
+        const pickupLandmark = document.getElementById('driverPickupLandmark').value.trim();
+        const dropoffArea = document.getElementById('driverDropoffArea').value;
+        const dropoffLandmark = document.getElementById('driverDropoffLandmark').value.trim();
+        const bookingDate = document.getElementById('driverDate').value;
+        const bookingTime = document.getElementById('driverTime').value;
+        const notes = document.getElementById('driverNotes').value.trim();
+
+        if (fullName.length < 3) { showFieldError('driverFullName', t('errCustName')); valid = false; }
+        if (phone.replace(/\D/g, '').length < 9) { showFieldError('driverPhone', t('errPhone')); valid = false; }
+        if (!pickupArea) { showFieldError('driverPickupArea', t('errPickupArea')); valid = false; }
+        if (pickupLandmark.length < 3) {
+          showFieldError('driverPickupLandmark', t('errPickupLandmark'));
+          valid = false;
+        } else if (isLocationOutsideKuantan(pickupLandmark)) {
+          showFieldError('driverPickupLandmark', t('errPickupOutside'));
+          valid = false;
+        }
+
+        if (!dropoffArea) { showFieldError('driverDropoffArea', t('errDropoffArea')); valid = false; }
+        if (dropoffLandmark.length < 3) {
+          showFieldError('driverDropoffLandmark', t('errDropoffLandmark'));
+          valid = false;
+        } else if (isLocationOutsideKuantan(dropoffLandmark)) {
+          showFieldError('driverDropoffLandmark', t('errDropoffOutside'));
+          valid = false;
+        }
+
+        if (!bookingDate) { showFieldError('driverDate', t('errDate')); valid = false; }
+
+        if (!valid) {
+          showToast(t('toastBookingCheckTitle'), t('toastBookingCheckMsg'), 'error');
+          return;
+        }
+
+        const fullPickup = `${pickupArea} — ${pickupLandmark} (Kuantan, Pahang)`;
+        const fullDropoff = `${dropoffArea} — ${dropoffLandmark} (Kuantan, Pahang)`;
+        const refCode = generateReferenceCode();
+        const localizedPlan = appState.driverPlan === 'Bayaran Harian' ? t('rcpPlanDaily') : t('rcpPlanMonthly');
+
+        const recordPayload = {
+          id: refCode,
+          tarikh: getFormattedDateTime(),
+          servis: 'Pemandu Peribadi',
+          pelan: appState.driverPlan,
+          nama: fullName,
+          telefon: phone,
+          lokasiAmbil: fullPickup,
+          lokasiHantar: fullDropoff,
+          tarikhTempahan: bookingDate,
+          masaAmbil: bookingTime || 'Tidak Dinyatakan',
+          catatan: notes || '-'
+        };
+
+        const summaryItems = [
+          { label: t('rcpService'), value: t('rcpServiceDriver') },
+          { label: t('rcpPlan'), value: localizedPlan },
+          { label: t('rcpCustomer'), value: fullName },
+          { label: t('rcpPhone'), value: phone },
+          { label: t('rcpPickup'), value: fullPickup },
+          { label: t('rcpDropoff'), value: fullDropoff },
+          { label: t('rcpPrice'), value: t('rcpPriceVal') },
+          { label: t('rcpDate'), value: `${bookingDate}${bookingTime ? ' • ' + bookingTime : ''}` }
+        ];
+
+        const btnSubmit = document.getElementById('btnSubmitDriver');
+        const originalHtml = btnSubmit.innerHTML;
+        const success = await submitRecordToFirebase(recordPayload, summaryItems, refCode, btnSubmit, originalHtml);
+
+        if (success) {
+          e.target.reset();
+          if (driverDateInput) {
+            driverDateInput.value = new Date().toISOString().split('T')[0];
+          }
+          selectDriverPlan('Bayaran Harian');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
